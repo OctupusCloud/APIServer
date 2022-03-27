@@ -21,5 +21,6 @@ from WebApp.views import *
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/v1/devices/', devices),
-    path('api/v1/<str:device>/interfaces/', interfaces),
+    path('api/v1/<str:_device>/interfaces/', interfaces),
+    path('api/v1/<str:_device>/interfaces/<str:_status>/', interfaces_status),
 ]

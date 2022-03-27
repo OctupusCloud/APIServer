@@ -12,27 +12,65 @@ from django.views.decorators.csrf import csrf_exempt
 def basic_authorization(request):
     auth = request.headers['Authorization'].split()[1]
     auth_decoded = base64.b64decode(auth).decode('utf-8').split(":")
-    if auth_decoded[0] == "oction" and auth_decoded[1] == "Scrimaglia":
-        return True
+    usuario_h = auth_decoded[0]
+    password_h = auth_decoded[1]
+    registro = list(Usuarios.objects.filter(usuario=usuario_h).values())
+    if len(registro) == 1:
+        usuario_db = registro[0]['usuario']
+        password_db = registro[0]['password']
+        if usuario_db == usuario_db and password_h == password_db:
+            return True
+        else:
+            return False
     else:
         return False
 
-
+@csrf_exempt
 def devices(request):
-    auth = basic_authorization(request)
-    if auth:
-        datos = {
-            "device": "Catalyst2900",
-            "datos": {
-                "family": "Low End Switch",
-                "interfaces": ["Giga0", "Giga1", "Giga2"]
-            }
-        }
-        return HttpResponse(json.dumps(datos))
+    if request.method == "GET":
+        auth = basic_authorization(request)
+        if auth:
+            registros = list(Devices.objects.all().values())
+            datos = json.dumps(registros)
+
+            return HttpResponse(datos)
+        else:
+            msg = f"Problemas con la autorización"
+
+        return HttpResponse(msg)
     else:
-        msg = f"Problemas con la autorización"
+        msg = f"Método {request.method} no sportado"
         return HttpResponse(msg)
 
-def interfaces(request, device):
-    msg = f"metodo {request.method}, device {device}"   
-    return HttpResponse(msg)
+@csrf_exempt
+def interfaces(request, _device):
+    if request.method == "GET":
+        auth = basic_authorization(request)
+        if auth:
+            auth = basic_authorization(request)
+            registros = list(Interfaces.objects.filter(device=_device).values())
+            salida = json.dumps(registros) 
+        else:
+            salida = f"Problemas con la autorización"
+
+        return HttpResponse(salida)
+    else:
+        msg = f"Método {request.method} no permitido"
+        return HttpResponse(msg)
+
+@csrf_exempt
+def interfaces_status(request, _device, _status):
+    if request.method == "GET":
+        auth = basic_authorization(request)
+        if auth:
+            registros = list(Interfaces.objects.filter(device=_device).values() & Interfaces.objects.filter(status=_status).values())
+            datos = json.dumps(registros)
+
+            return HttpResponse(datos)
+        else:
+            msg = f"Problemas con la autorización"
+
+        return HttpResponse(msg)
+    else:
+        msg = f"Método {request.method} no sportado"
+        return HttpResponse(msg)
