@@ -34,9 +34,9 @@ def devices(request):
 
             return HttpResponse(datos)
         else:
-            msg = f"Problemas con la autorización"
+            datos = f"Problemas con la autorización"
 
-            return HttpResponse(msg)
+        return HttpResponse(datos)
     else:
         msg = f"Método {request.method} no sportado"
         return HttpResponse(msg)
@@ -46,13 +46,12 @@ def interfaces(request, _device):
     if request.method == "GET":
         auth = basic_authorization(request)
         if auth:
-            auth = basic_authorization(request)
             registros = list(Interfaces.objects.filter(device=_device).values())
-            salida = json.dumps(registros) 
+            datos = json.dumps(registros) 
         else:
-            salida = f"Problemas con la autorización"
+            datos = f"Problemas con la autorización"
 
-            return HttpResponse(salida)
+        return HttpResponse(datos)
     else:
         msg = f"Método {request.method} no permitido"
         return HttpResponse(msg)
@@ -65,11 +64,10 @@ def interfaces_status(request, _device, _status):
             registros = list(Interfaces.objects.filter(device=_device).values() & Interfaces.objects.filter(status=_status).values())
             datos = json.dumps(registros)
 
-            return HttpResponse(datos)
         else:
-            msg = f"Problemas con la autorización"
+            datos = f"Problemas con la autorización"
 
-            return HttpResponse(msg)
+        return HttpResponse(datos)
     else:
         msg = f"Método {request.method} no sportado"
         return HttpResponse(msg)
