@@ -1,3 +1,2 @@
 .DS_Store
-.ApiServer/settings.py
-.db.sqlite3
+.ApiServer\settings.py
