@@ -52,7 +52,7 @@ def interfaces(request, _device):
         else:
             salida = f"Problemas con la autorización"
 
-        return HttpResponse(salida)
+            return HttpResponse(salida)
     else:
         msg = f"Método {request.method} no permitido"
         return HttpResponse(msg)
@@ -69,7 +69,7 @@ def interfaces_status(request, _device, _status):
         else:
             msg = f"Problemas con la autorización"
 
-        return HttpResponse(msg)
+            return HttpResponse(msg)
     else:
         msg = f"Método {request.method} no sportado"
         return HttpResponse(msg)
