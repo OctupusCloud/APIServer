@@ -1,3 +1,4 @@
 .DS_Store
 /ApiServer/settings.py
 db.sqlite3
+.gitignore
