@@ -1,4 +1,3 @@
 .DS_Store
-./ApiServer/*
-!./ApiServer/urls.py
+.ApiServer/urls.py
 .db.sqlite3
