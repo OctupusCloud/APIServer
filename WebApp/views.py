@@ -16,9 +16,8 @@ def basic_authorization(request):
     password_h = auth_decoded[1]
     registro = list(Usuarios.objects.filter(usuario=usuario_h).values())
     if len(registro) == 1:
-        usuario_db = registro[0]['usuario']
         password_db = registro[0]['password']
-        if usuario_h == usuario_db and password_h == password_db:
+        if password_h == password_db:
             return True
         else:
             return False
