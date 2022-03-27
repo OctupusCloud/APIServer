@@ -37,7 +37,7 @@ def devices(request):
         else:
             msg = f"Problemas con la autorización"
 
-        return HttpResponse(msg)
+            return HttpResponse(msg)
     else:
         msg = f"Método {request.method} no sportado"
         return HttpResponse(msg)
