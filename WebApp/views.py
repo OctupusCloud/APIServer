@@ -18,7 +18,7 @@ def basic_authorization(request):
     if len(registro) == 1:
         usuario_db = registro[0]['usuario']
         password_db = registro[0]['password']
-        if usuario_db == usuario_db and password_h == password_db:
+        if usuario_h == usuario_db and password_h == password_db:
             return True
         else:
             return False
