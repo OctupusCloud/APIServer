@@ -16,9 +16,26 @@ Descripción: agrega, elimina, modifica y retorna las interfaces de un {disposit
 
 Métodos:
 GET  
-POST  
-PATCH  
-DELETE  
+POST
+  Body:
+  {
+    "device": "device name",
+    "type": "Giga" o "Fast",
+    "slot": 0 o 1,
+    "port": 0 o 1,
+    "ip_address": "X.X.X.X" o "none",
+    "status": "Up" o "Down"
+  }
+PATCH
+ Body:
+  {
+    "id": id, (registro a modificar)
+    atributo a cambiar en formato Key/Value
+  }
+DELETE
+ {
+    "id": id, (registro a eliminar)
+  }
 
 ### api/v1/{device}/interfaces/{status}
 

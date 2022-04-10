@@ -30,9 +30,9 @@ def devices(request):
         auth = basic_authorization(request)
         if auth:
             registros = list(Devices.objects.all().values())
-            datos = json.dumps(registros)
+            #datos = json.dumps(registros)
 
-            return HttpResponse(datos)
+            return HttpResponse(registros)
         else:
             datos = f"Problemas con la autorización"
 
