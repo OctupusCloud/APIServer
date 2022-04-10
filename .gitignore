@@ -1,7 +1,7 @@
 Apiserver/settings.py
 Apiserver/wsgi.py
 Apiserver/asgi.py
-migrations
+WebApp/apps.py
 db.sqlite3
 .gitignore
 
