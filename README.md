@@ -33,6 +33,7 @@ PATCH
 &nbsp;&nbsp;&nbsp;&nbsp;atributo a cambiar en formato Key/Value  
 &nbsp;&nbsp;&nbsp;&nbsp;}  
 DELETE  
+&nbsp;&nbsp;Body:  
 &nbsp;&nbsp;{  
 &nbsp;&nbsp;&nbsp;&nbsp;"id": id, (registro a eliminar)  
 &nbsp;&nbsp;}  
