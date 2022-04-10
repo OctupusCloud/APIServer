@@ -20,7 +20,7 @@ POST
   Body:  
   {  
     "device": "device name",  
-    "type": "Giga" o "Fast", 
+    "type": "Giga" o "Fast",  
     "slot": 0 o 1,  
     "port": 0 o 1,  
     "ip_address": "X.X.X.X" o "none",  
