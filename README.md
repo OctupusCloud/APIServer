@@ -14,7 +14,7 @@ GET
 
 Descripción: agrega, elimina, modifica y retorna las interfaces de un {dispositivo} almacenaodo en la DB  
 
-Métodos:
+Métodos:  
 GET  
 POST  
   Body:  
@@ -41,7 +41,7 @@ DELETE
 
 Descripción: retorna las interfaces de un {dispositivo} almecenado en la DB según su estado {Up o Down}  
 
-Métodos:
+Métodos:  
 GET  
 
 ## Base de datos
