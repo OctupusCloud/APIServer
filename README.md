@@ -17,25 +17,25 @@ Descripción: agrega, elimina, modifica y retorna las interfaces de un {disposit
 Métodos:  
 GET  
 POST  
-  Body:  
-  {  
-    "device": "device name",  
-    "type": "Giga" o "Fast",  
-    "slot": 0 o 1,  
-    "port": 0 o 1,  
-    "ip_address": "X.X.X.X" o "none",  
-    "status": "Up" o "Down"  
-  }  
+&nbsp;&nbsp;Body:  
+&nbsp;&nbsp;{  
+&nbsp;&nbsp;"device": "device name",  
+&nbsp;&nbsp;"type": "Giga" o "Fast",  
+&nbsp;&nbsp;"slot": 0 o 1,  
+&nbsp;&nbsp;"port": 0 o 1,  
+&nbsp;&nbsp;"ip_address": "X.X.X.X" o "none",  
+&nbsp;&nbsp;"status": "Up" o "Down"  
+&nbsp;&nbsp;}  
 PATCH  
- Body:  
-  {  
-    "id": id, (registro a modificar)  
-    atributo a cambiar en formato Key/Value  
-  }  
+&nbsp;&nbsp;Body:  
+&nbsp;&nbsp;{  
+&nbsp;&nbsp;"id": id, (registro a modificar)  
+&nbsp;&nbsp;atributo a cambiar en formato Key/Value  
+&nbsp;&nbsp;}  
 DELETE  
- {  
-    "id": id, (registro a eliminar)  
-  }  
+&nbsp;&nbsp;{  
+&nbsp;&nbsp;"id": id, (registro a eliminar)  
+&nbsp;&nbsp;}  
 
 ### api/v1/{device}/interfaces/{status}
 
