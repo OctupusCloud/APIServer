@@ -1,7 +1,0 @@
-Apiserver/settings.py
-Apiserver/wsgi.py
-Apiserver/asgi.py
-db.sqlite3
-.gitignore
-
-
