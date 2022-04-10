@@ -1,3 +1,5 @@
 ApiServer/settings.py
+ApiServer/asgi.py
+ApiServer/wsgi.py
 db.sqlite3
 
