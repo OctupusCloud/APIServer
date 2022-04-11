@@ -43,9 +43,11 @@ def devices(request):
         auth = basic_authorization(request)
         if auth:
             registros = list(Devices.objects.all().values())
-            datos = json.dumps(registros)
-
-            return HttpResponse(datos)
+            if len(registros) >= 1:
+                datos = json.dumps(registros)
+                return HttpResponse(datos)
+            else:
+                msg = {"result": f"no hay registros."}
         else:
             msg = {"result": f"Problemas con la autorización"}
     else:
@@ -59,10 +61,12 @@ def interfaces(request, _device):
     if request.method == "GET":
         auth = basic_authorization(request)
         if auth:
-            registros = list(Interfaces.objects.filter(device=_device).values())
-            datos = json.dumps(registros) 
-
-            return HttpResponse(datos)
+            registros = list(Interfaces.objects.filter(device=str(_device).strip()).values())
+            if len(registros) >= 1:
+                datos = json.dumps(registros)
+                return HttpResponse(datos)
+            else:
+                msg = {"result": f"no hay registros. Check URL device '{_device}'"}
         else:
             msg = {"result": f"Problemas con la autorización"}
 
