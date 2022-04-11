@@ -19,23 +19,11 @@ GET
 POST  
 &nbsp;&nbsp;Body:  
 &nbsp;&nbsp;{  
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"device": "device name",  
 &nbsp;&nbsp;&nbsp;&nbsp;"type": "Giga" o "Fast",  
 &nbsp;&nbsp;&nbsp;&nbsp;"slot": 0 o 1,  
 &nbsp;&nbsp;&nbsp;&nbsp;"port": 0 o 1,  
 &nbsp;&nbsp;&nbsp;&nbsp;"ip_address": "X.X.X.X" o "none",  
 &nbsp;&nbsp;&nbsp;&nbsp;"status": "Up" o "Down"  
-&nbsp;&nbsp;}  
-PATCH  
-&nbsp;&nbsp;Body:  
-&nbsp;&nbsp;{  
-&nbsp;&nbsp;&nbsp;&nbsp;"id": id, (registro a modificar)  
-&nbsp;&nbsp;&nbsp;&nbsp;atributo a cambiar en formato Key/Value  
-&nbsp;&nbsp;&nbsp;&nbsp;}  
-DELETE  
-&nbsp;&nbsp;Body:  
-&nbsp;&nbsp;{  
-&nbsp;&nbsp;&nbsp;&nbsp;"id": id, (registro a eliminar)  
 &nbsp;&nbsp;}  
 
 ### api/v1/{device}/interfaces/{status}
