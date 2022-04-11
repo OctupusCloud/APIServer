@@ -1,3 +1,6 @@
+# ApiServer proyect
+# By Ed Scrimaglia
+
 from ipaddress import ip_address
 from os import name
 from django.http import HttpResponse
@@ -7,7 +10,7 @@ import base64
 from WebApp.models import Interfaces, Devices, Usuarios
 from django.views.decorators.csrf import csrf_exempt
 
-# Create your views here.
+# The models
 
 def basic_authorization(request):
     auth = request.headers['Authorization'].split()[1]
