@@ -4,4 +4,6 @@ ApiServer/wsgi.py
 ApiServer/__pycache__
 WebApp/__pycache__
 db.sqlite3
+.gitignore
+
 
