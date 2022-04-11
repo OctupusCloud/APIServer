@@ -23,7 +23,7 @@ POST
 &nbsp;&nbsp;&nbsp;&nbsp;"slot": 0 o 1,  
 &nbsp;&nbsp;&nbsp;&nbsp;"port": 0 o 1,  
 &nbsp;&nbsp;&nbsp;&nbsp;"ip_address": "X.X.X.X" o "none",  
-&nbsp;&nbsp;&nbsp;&nbsp;"status": "Up" o "Down"  
+&nbsp;&nbsp;&nbsp;&nbsp;"status": "u" o "d"  
 &nbsp;&nbsp;}  
 
 ### api/v1/{device}/interfaces/{status}
