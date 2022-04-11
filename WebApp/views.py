@@ -1,10 +1,10 @@
-from optparse import Values
+from ipaddress import ip_address
 from os import name
 from django.http import HttpResponse
 from django.shortcuts import render
 import json
 import base64
-from WebApp.models import *
+from WebApp.models import Interfaces, Devices, Usuarios
 from django.views.decorators.csrf import csrf_exempt
 
 # Create your views here.
@@ -30,9 +30,9 @@ def devices(request):
         auth = basic_authorization(request)
         if auth:
             registros = list(Devices.objects.all().values())
-            #datos = json.dumps(registros)
+            datos = json.dumps(registros)
 
-            return HttpResponse(registros)
+            return HttpResponse(datos)
         else:
             datos = f"Problemas con la autorización"
 
@@ -52,9 +52,41 @@ def interfaces(request, _device):
             datos = f"Problemas con la autorización"
 
         return HttpResponse(datos)
+    elif request.method == "POST":
+        expected_keys = ["device","type","slot","port","ip4_address","status"]
+        body = json.loads(request.body.decode('utf-8'))
+        keys = list(body.keys())
+        if keys == expected_keys:
+            if check_values(body):
+                device_v = Devices.objects.get(name=body["device"])
+                if str(device_v) == str(_device):
+                    type_v = body["type"]
+                    slot_v = body["slot"]
+                    port_v = body["port"]
+                    ip_address_v = body["ip4_address"]
+                    status_v = body["status"]
+                    obj, created = Interfaces.objects.get_or_create(device=device_v,
+                                                                    type=type_v,
+                                                                    slot=slot_v,
+                                                                    port=port_v,
+                                                                    ip4_address=ip_address_v,
+                                                                    status=status_v)
+                    if created:
+                        msg = f"Registro creado, id {obj.id}"
+                    else:
+                        msg = f"Registro existente, id {obj.id}"
+                else:
+                    msg = f"Parámetro <device> incorrecto en URL, debe ser {device_v}"
+            else:
+                msg = f"Body incorrecto, bad values {json.dumps(body)}"
+        else:
+            msg = f"Body incorrecto, bad keys {keys}"
+
+        return HttpResponse(msg) 
     else:
         msg = f"Método {request.method} no permitido"
         return HttpResponse(msg)
+
 
 @csrf_exempt
 def interfaces_status(request, _device, _status):
@@ -71,3 +103,12 @@ def interfaces_status(request, _device, _status):
     else:
         msg = f"Método {request.method} no sportado"
         return HttpResponse(msg)
+
+def check_values(_body):
+    if isinstance(_body['device'], str) and isinstance(_body['device'], str) and isinstance(_body['ip4_address'], str) and isinstance(_body['status'], str):
+        if isinstance(_body['slot'], int) and isinstance(_body['slot'], int):
+            return True
+        else:
+            return False
+    else:
+        return False
