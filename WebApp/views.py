@@ -45,7 +45,6 @@ def devices(request):
         if auth:
             registros = list(Devices.objects.all().values())
             if len(registros) >= 1:
-                #datos = json.dumps(registros)
                 return JsonResponse(registros, safe=False)
             else:
                 msg = {"result": f"no hay registros."}
