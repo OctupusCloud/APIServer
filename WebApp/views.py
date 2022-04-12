@@ -11,12 +11,10 @@ from django.shortcuts import render
 import json
 import base64
 from py import code
-
 from pymysql import IntegrityError
 from WebApp.models import Interfaces, Devices, Usuarios
 from django.views.decorators.csrf import csrf_exempt
 from django.core.exceptions import ObjectDoesNotExist
-from django.db.utils import IntegrityError
 
 
 # The Views and the Logic
