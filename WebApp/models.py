@@ -1,10 +1,13 @@
+# ApiServer proyect
+# By Ed Scrimaglia
+
 from operator import contains
 from tkinter import CASCADE, Widget
 from django import forms
 from django.db import models
 from psutil import users
 
-# Create your models here.
+# Classes & tables.
 
 class Devices(models.Model):
     name = models.CharField(max_length=15, primary_key=True,unique=True)

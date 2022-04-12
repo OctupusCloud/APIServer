@@ -3,9 +3,11 @@
 
 from codecs import encode
 from encodings import utf_8
+import imp
 from ipaddress import ip_address
 from json import encoder
 from os import name
+from pickle import FALSE
 from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render
 import json
@@ -15,6 +17,7 @@ from pymysql import IntegrityError
 from WebApp.models import Interfaces, Devices, Usuarios
 from django.views.decorators.csrf import csrf_exempt
 from django.core.exceptions import ObjectDoesNotExist
+from django.db.utils import IntegrityError
 
 
 # The Views and the Logic
@@ -42,8 +45,8 @@ def devices(request):
         if auth:
             registros = list(Devices.objects.all().values())
             if len(registros) >= 1:
-                datos = json.dumps(registros)
-                return HttpResponse(datos)
+                #datos = json.dumps(registros)
+                return JsonResponse(registros, safe=False)
             else:
                 msg = {"result": f"no hay registros."}
         else:
@@ -51,7 +54,7 @@ def devices(request):
     else:
         msg = {"result": f"Método {request.method} no sportado"}
     
-    return HttpResponse(json.dumps(msg, ensure_ascii=False).encode("utf-8"))
+    return JsonResponse(msg, safe=False)
 
 
 @csrf_exempt
