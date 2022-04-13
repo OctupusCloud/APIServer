@@ -4,13 +4,13 @@
 
 ## API endpoints
 
-### api/v1/devices
+### api/v1/devices/
 
 Descripción: retorna los dispositvos almacenados en la DB  
 Métodos:
 GET  
 
-### api/v1/{device}/interfaces
+### api/v1/{device}/interfaces/
 
 Descripción: agrega, elimina, modifica y retorna las interfaces de un {dispositivo} almacenaodo en la DB  
 
@@ -26,7 +26,7 @@ POST
 &nbsp;&nbsp;&nbsp;&nbsp;"status": "u" o "d"  
 &nbsp;&nbsp;}  
 
-### api/v1/{device}/interfaces/{status}
+### api/v1/{device}/interfaces/{status}/
 
 Descripción: retorna las interfaces de un {dispositivo} almecenado en la DB según su estado {Up o Down}  
 
