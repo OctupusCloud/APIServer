@@ -45,6 +45,8 @@ def devices(request):
         if auth:
             registros = list(Devices.objects.all().values())
             if len(registros) >= 1:
+                for object in registros:
+                    object.pop("id", None)
                 return JsonResponse(registros, safe=False)
             else:
                 msg = {"result": f"no hay registros."}
@@ -63,8 +65,9 @@ def interfaces(request, _device):
         if auth:
             registros = list(Interfaces.objects.filter(device=str(_device).strip()).values())
             if len(registros) >= 1:
-                datos = json.dumps(registros)
-                return HttpResponse(datos)
+                for object in registros:
+                    object.pop("id", None)
+                return HttpResponse(json.dumps(registros))
             else:
                 msg = {"result": f"no hay registros. Check URL device '{_device}'"}
         else:
@@ -120,8 +123,9 @@ def interfaces_status(request, _device, _status):
         if auth:
             registros = list(Interfaces.objects.filter(device=str(_device).strip()).values() & Interfaces.objects.filter(status=_status).values())
             if len(registros) >= 1:
-                datos = json.dumps(registros)
-                return HttpResponse(datos)
+                for object in registros:
+                    object.pop("id", None)
+                return HttpResponse(json.dumps(registros))
             else:
                 msg = {"result": f"no hay registros. Check URL device '{_device}' o status '{_status}'"}
         else:
