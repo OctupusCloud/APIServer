@@ -67,7 +67,7 @@ def interfaces(request, _device):
             if len(registros) >= 1:
                 for object in registros:
                     object.pop("id", None)
-                return HttpResponse(json.dumps(registros))
+                return JsonResponse(registros, safe=False)
             else:
                 msg = {"result": f"no hay registros. Check URL device '{_device}'"}
         else:
@@ -113,7 +113,7 @@ def interfaces(request, _device):
     else:
         msg = {"result": f"Método {request.method} no permitido"}
 
-    return HttpResponse(json.dumps(msg, ensure_ascii=False).encode("utf-8"))
+    return JsonResponse(msg, safe=False)
 
 
 @csrf_exempt
@@ -125,7 +125,7 @@ def interfaces_status(request, _device, _status):
             if len(registros) >= 1:
                 for object in registros:
                     object.pop("id", None)
-                return HttpResponse(json.dumps(registros))
+                return JsonResponse(registros, safe=False)
             else:
                 msg = {"result": f"no hay registros. Check URL device '{_device}' o status '{_status}'"}
         else:
@@ -133,7 +133,7 @@ def interfaces_status(request, _device, _status):
     else:
         msg = {"result": f"Método {request.method} no sportado"}
 
-    return HttpResponse(json.dumps(msg, ensure_ascii=False).encode("utf-8"))
+    return JsonResponse(msg, safe=False)
 
 def check_values(_body):
     if isinstance(_body['type'], str) and isinstance(_body['ip4_address'], str) and isinstance(_body['status'], str):
