@@ -1,4 +1,4 @@
-# ApiServer proyect
+# ApiServer project
 # By Ed Scrimaglia
 
 from codecs import encode
