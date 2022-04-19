@@ -1,6 +1,7 @@
 # ApiServer project
 # By Ed Scrimaglia
 
+from asyncore import write
 from codecs import encode
 from encodings import utf_8
 import imp
@@ -8,16 +9,23 @@ from ipaddress import ip_address
 from json import encoder
 from os import name
 from pickle import FALSE
+from queue import Empty
+import re
+from urllib import response
 from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render
 import json
 import base64
 from py import code
-from pymysql import IntegrityError
+from pymysql import NULL, IntegrityError
+from requests import Response
+from yaml import safe_dump, serialize
 from WebApp.models import Interfaces, Devices, Usuarios
 from django.views.decorators.csrf import csrf_exempt
 from django.core.exceptions import ObjectDoesNotExist
 from django.db.utils import IntegrityError
+from django.forms.models import model_to_dict
+from django.core import serializers
 
 
 # The Views and the Logic
@@ -143,3 +151,40 @@ def check_values(_body):
             return False
     else:
         return False
+
+@csrf_exempt
+def api_test(request):
+    headers_o = dict(request.headers)
+    headers_r = dict()
+
+    for key,value in headers_o.items():
+        if key == "Authorization":
+            auth = request.headers['Authorization'].split()[1]
+            auth_decoded = base64.b64decode(auth).decode('utf-8').split(":")
+            usuario_h = auth_decoded[0]
+            password_h = auth_decoded[1]
+            auth_v = dict()
+            auth_v['Encoded'] = value
+            auth_v['User'] = usuario_h
+            auth_v['Password'] = password_h
+            headers_r[key] = auth_v
+        else:    
+            headers_r[key] = value
+
+    headers_r['Method'] = request.method
+    if bool(request.encoding): 
+        headers_r['Encoding'] = request.encoding
+    if bool(request.content_params):
+        headers_r['Params'] = request.content_params
+    if bool(request.COOKIES):
+        headers_r['Cookies'] = request.COOKIES
+    headers_r['Scheme'] = request.scheme
+    if bool(request.GET):
+        headers_r['GET'] = request.GET
+    if bool(request.POST):
+        headers_r['POST'] = request.POST
+    headers_r['Status_Code'] = HttpResponse.status_code
+    if bool(request.body):
+        headers_r['Body'] = json.loads(request.body)
+
+    return JsonResponse(headers_r, safe=False)
