@@ -153,36 +153,52 @@ def check_values(_body):
 @csrf_exempt
 def api_test(request):
     headers_o = dict(request.headers)
-    headers_r = dict()
+    api_test = dict()
+    headers_auth = dict()
 
     for key,value in headers_o.items():
         if key == "Authorization":
-            auth = request.headers['Authorization'].split()[1]
-            auth_decoded = base64.b64decode(auth).decode('utf-8').split(":")
-            usuario_h = auth_decoded[0]
-            password_h = auth_decoded[1]
-            auth_v = dict()
-            auth_v['Encoded'] = value
-            auth_v['User'] = usuario_h
-            auth_v['Password'] = password_h
-            headers_r[key] = auth_v
+            tipo_auth = request.headers['Authorization'].split()[0]
+            credentials = get_credentials(request,tipo_auth)
+            if "Basic" in tipo_auth:
+                auth_v = dict()
+                auth_v['Encoded'] = value
+                auth_v['User'] = credentials[0]
+                auth_v['Password'] = credentials[1]
+            headers_auth[key] = auth_v
         else:    
-            headers_r[key] = value
+            headers_auth[key] = value
 
-    headers_r['Method'] = request.method
+    api_test['Headers'] = headers_auth
+    api_test['Method'] = request.method
     if bool(request.encoding): 
-        headers_r['Encoding'] = request.encoding
+        api_test['Encoding'] = request.encoding
     if bool(request.content_params):
-        headers_r['Params'] = request.content_params
+        api_test['Params'] = request.content_params
     if bool(request.COOKIES):
-        headers_r['Cookies'] = request.COOKIES
-    headers_r['Scheme'] = request.scheme
+        api_test['Cookies'] = request.COOKIES
+    api_test['Scheme'] = request.scheme
     if bool(request.GET):
-        headers_r['GET'] = request.GET
+        api_test['GET'] = request.GET
     if bool(request.POST):
-        headers_r['POST'] = request.POST
-    headers_r['Status_Code'] = HttpResponse.status_code
+        api_test['POST'] = request.POST
     if bool(request.body):
-        headers_r['Body'] = json.loads(request.body)
+        api_test['Body'] = json.loads(request.body)
+    api_test['Status_Code'] = HttpResponse.status_code
+    
+    api_test_result = dict()
+    api_test_result['api_result'] = api_test
 
-    return JsonResponse(headers_r, safe=False)
+    return JsonResponse(api_test_result, safe=False)
+
+def get_credentials(request, tipo):
+    auth = request.headers['Authorization'].split()[1]
+    if "Basic" in tipo:
+        auth_decoded = base64.b64decode(auth).decode('utf-8').split(":")
+        usuario_h = auth_decoded[0]
+        password_h = auth_decoded[1]
+        cred_l = list()
+        cred_l.append(usuario_h)
+        cred_l.append(password_h)
+    
+    return cred_l
