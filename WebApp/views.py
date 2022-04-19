@@ -160,11 +160,15 @@ def api_test(request):
         if key == "Authorization":
             tipo_auth = request.headers['Authorization'].split()[0]
             credentials = get_credentials(request,tipo_auth)
+            auth_v = dict()
             if "Basic" in tipo_auth:
-                auth_v = dict()
+                auth_v['Tipo'] = credentials[0]
                 auth_v['Encoded'] = value
-                auth_v['User'] = credentials[0]
-                auth_v['Password'] = credentials[1]
+                auth_v['User'] = credentials[1]
+                auth_v['Password'] = credentials[2]
+            else:
+                auth_v['Tipo'] = credentials[0]
+                auth_v['Encoded'] = credentials[1]
             headers_auth[key] = auth_v
         else:    
             headers_auth[key] = value
@@ -193,12 +197,19 @@ def api_test(request):
 
 def get_credentials(request, tipo):
     auth = request.headers['Authorization'].split()[1]
+    cred_l = list()
     if "Basic" in tipo:
         auth_decoded = base64.b64decode(auth).decode('utf-8').split(":")
         usuario_h = auth_decoded[0]
         password_h = auth_decoded[1]
-        cred_l = list()
+        cred_l.append(tipo)
         cred_l.append(usuario_h)
         cred_l.append(password_h)
+    elif "Bearer" in tipo:
+        cred_l.append("Token")
+        cred_l.append(auth)
+    else:
+        cred_l.append(tipo)
+        cred_l.append(auth)
     
     return cred_l
