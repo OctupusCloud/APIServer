@@ -24,8 +24,6 @@ from WebApp.models import Interfaces, Devices, Usuarios
 from django.views.decorators.csrf import csrf_exempt
 from django.core.exceptions import ObjectDoesNotExist
 from django.db.utils import IntegrityError
-from django.forms.models import model_to_dict
-from django.core import serializers
 
 
 # The Views and the Logic
