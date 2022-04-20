@@ -3,23 +3,22 @@
 
 from asyncore import write
 from codecs import encode
-from encodings import utf_8
-import imp
+#from encodings import utf_8
+#import imp
 from ipaddress import ip_address
-from json import encoder
+#from json import encoder
 from os import name
 from pickle import FALSE
-from queue import Empty
-import re
-from urllib import response
+#from queue import Empty
+#import re
 from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render
 import json
 import base64
 from py import code
 from pymysql import NULL, IntegrityError
-from requests import Response
-from yaml import safe_dump, serialize
+#from requests import Response
+#from yaml import safe_dump, serialize
 from WebApp.models import Interfaces, Devices, Usuarios
 from django.views.decorators.csrf import csrf_exempt
 from django.core.exceptions import ObjectDoesNotExist
@@ -175,23 +174,10 @@ def api_test(request):
 
     api_test['Headers'] = headers_auth
     api_test['Method'] = request.method
-    if bool(request.encoding): 
-        api_test['Encoding'] = request.encoding
-    if bool(request.content_params):
-        api_test['Params'] = request.content_params
-    if bool(request.COOKIES):
-        api_test['Cookies'] = request.COOKIES
-    api_test['Scheme'] = request.scheme
-    if bool(request.GET):
-        api_test['GET'] = request.GET
-    if bool(request.POST):
-        api_test['POST'] = request.POST
-    if bool(request.body):
-        api_test['Body'] = json.loads(request.body)
-    api_test['Status_Code'] = HttpResponse.status_code
+    api_test['Msg'] = f"Welcome to ApiServer by Octupus"
     
     api_test_result = dict()
-    api_test_result['api_result'] = api_test
+    api_test_result['test_result'] = api_test
 
     return JsonResponse(api_test_result, safe=False)
 
