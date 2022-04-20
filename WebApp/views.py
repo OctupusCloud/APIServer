@@ -174,7 +174,7 @@ def api_test(request):
 
     api_test['Headers'] = headers_auth
     api_test['Method'] = request.method
-    api_test['Msg'] = f"Welcome to ApiServer by Octupus"
+    api_test['Msg'] = f"Welcome to ApiServer by OctUPus"
     
     api_test_result = dict()
     api_test_result['test_result'] = api_test
