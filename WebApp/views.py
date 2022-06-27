@@ -9,6 +9,7 @@ from ipaddress import ip_address
 #from json import encoder
 from os import name
 from pickle import FALSE
+from turtle import up
 #from queue import Empty
 #import re
 from django.http import HttpResponse, JsonResponse
@@ -17,6 +18,7 @@ import json
 import base64
 from py import code
 from pymysql import NULL, IntegrityError
+from tomlkit import item
 #from requests import Response
 #from yaml import safe_dump, serialize
 from WebApp.models import Interfaces, Devices, Usuarios
@@ -65,23 +67,19 @@ def devices(request):
 
 @csrf_exempt
 def interfaces(request, _device):
-    if request.method == "GET":
-        auth = basic_authorization(request)
-        if auth:
+    auth = basic_authorization(request)
+    msg = ''
+    if auth:
+        if request.method == "GET":
             registros = list(Interfaces.objects.filter(device=str(_device).strip()).values())
             if len(registros) >= 1:
-                for object in registros:
-                    object.pop("id", None)
-                return JsonResponse(registros, safe=False)
+                output_dict = create_output(registros)
+                return JsonResponse(output_dict, safe=False)
             else:
                 msg = {"result": f"no hay registros. Check URL device '{_device}'"}
-        else:
-            msg = {"result": f"Problemas con la autorización"}
 
-        return HttpResponse(json.dumps(msg, ensure_ascii=False).encode("utf-8"))
-    elif request.method == "POST":
-        auth = basic_authorization(request)
-        if auth:
+            return HttpResponse(json.dumps(msg, ensure_ascii=False).encode("utf-8"))
+        elif request.method == "POST":
             expected_keys = ["type","slot","port","ip4_address","status"]
             body = json.loads(request.body.decode('utf-8'))
             keys = list(body.keys())
@@ -95,14 +93,15 @@ def interfaces(request, _device):
                         ip_address_v = body["ip4_address"]
                         status_v = body["status"]
                         try:
-                            obj, created = Interfaces.objects.get_or_create(device=device_v,
-                                                                            type=type_v,
-                                                                            slot=slot_v,
-                                                                            port=port_v,
-                                                                            ip4_address=ip_address_v,
-                                                                            status=status_v)
+                            obj, created = Interfaces.objects.get_or_create(
+                                device=device_v,
+                                type=type_v,
+                                slot=slot_v,
+                                port=port_v,
+                                ip4_address=ip_address_v,
+                                status=status_v)
                             if created:
-                                msg = {"result": f"Registro creado, id {obj.id}"}
+                                msg = {"result": f"Interfaz tipo: {type_v}, slot: {slot_v}, port: {port_v}, en device {device_v}, created"}
                             else:
                                 msg = {"result": f"Registro existente"}
                         except IntegrityError as error:
@@ -113,24 +112,67 @@ def interfaces(request, _device):
                     msg = {"result": f"Body incorrecto, bad values {body}"}
             else:
                 msg = {"result": f"Body incorrecto, bad keys {keys}"}
+        elif request.method == "PATCH":
+            expected_keys = ["type","slot","port","ip4_address","status"]
+            body = json.loads(request.body.decode('utf-8'))
+            keys = list(body.keys())
+            if all(item in expected_keys for item in keys):
+                if check_values(body):
+                    try:
+                        device_v = Devices.objects.get(name=(str(_device).strip()))
+                        type_v = body["type"]
+                        slot_v = body["slot"]
+                        port_v = body["port"]
+                        ip_address_v = body["ip4_address"] if "ip4_address" in body else False
+                        status_v = body["status"] if "status" in body else False
+                        try:
+                            obj = Interfaces.objects.get(device=device_v,slot=slot_v,port=port_v)
+                            obj.ip4_address = ip_address_v if ip_address_v else obj.ip4_address
+                            obj.status = status_v if status_v else obj.status
+                            obj.save()
+                            msg = {"result": f"Interfaz tipo: {type_v}, slot: {slot_v}, port: {port_v}, en device {device_v}, updated"}
+                        except Interfaces.DoesNotExist as error:
+                            msg = {"result": f"Interfaz no existe"}
+                    except Devices.DoesNotExist as error:
+                        msg = {"result": f"No existe device '{_device}'. Check URL"}
+            else:
+                msg = {"result": f"Body incorrecto, bad keys {keys}"}
+        elif request.method == "DELETE":
+            expected_keys = ["type","slot","port"]
+            body = json.loads(request.body.decode('utf-8'))
+            keys = list(body.keys())
+            if keys == expected_keys:
+                device_v = Devices.objects.get(name=(str(_device).strip()))
+                type_v = body["type"]
+                slot_v = body["slot"]
+                port_v = body["port"]
+                try:
+                    obj = Interfaces.objects.filter(device=device_v,type=type_v,slot=slot_v,port=port_v).delete()
+                    msg = {"result": f"Interfaz tipo: {type_v}, slot: {slot_v}, port: {port_v}, en device {device_v}, deleted"}
+                except Interfaces.DoesNotExist as error:
+                    msg = {"result": f"Interfaz no existe"}
+            else:
+                msg = {"result": f"Body incorrecto, bad keys {keys}"}
         else:
-            msg = {"result": f"Problemas con la autorización"}
+            msg = {"result": f"Método {request.method} no permitido"}
     else:
-        msg = {"result": f"Método {request.method} no permitido"}
+        msg = {"result": f"Problemas con la autorización"}
 
     return JsonResponse(msg, safe=False)
-
 
 @csrf_exempt
 def interfaces_status(request, _device, _status):
     if request.method == "GET":
         auth = basic_authorization(request)
+        if _status.lower() == "up":
+            status_v = "u"
+        elif _status.lower() == "down":
+            status_v = "d"
         if auth:
-            registros = list(Interfaces.objects.filter(device=str(_device).strip()).values() & Interfaces.objects.filter(status=_status).values())
+            registros = list(Interfaces.objects.filter(device=str(_device).strip()).values() & Interfaces.objects.filter(status=status_v).values())
             if len(registros) >= 1:
-                for object in registros:
-                    object.pop("id", None)
-                return JsonResponse(registros, safe=False)
+                ouput_dict = create_output(registros)
+                return JsonResponse(ouput_dict, safe=False)
             else:
                 msg = {"result": f"no hay registros. Check URL device '{_device}' o status '{_status}'"}
         else:
@@ -141,11 +183,33 @@ def interfaces_status(request, _device, _status):
     return JsonResponse(msg, safe=False)
 
 def check_values(_body):
-    if isinstance(_body['type'], str) and isinstance(_body['ip4_address'], str) and isinstance(_body['status'], str):
-        if isinstance(_body['slot'], int) and isinstance(_body['port'], int):
-            return True
+    if  'type' in _body:
+        if  isinstance(_body['type'], str):
+            result = True
         else:
-            return False
+            result = False
+    if 'ip4_address' in _body:
+        if isinstance(_body['ip4_address'], str):
+            result = True
+        else:
+            result = False
+    if 'status' in _body:
+        if isinstance(_body['status'], str):
+            result = True
+        else:
+            result = False
+    if 'slot' in _body:
+        if isinstance(_body['slot'], int):
+            result = True
+        else:
+            result = False
+    if 'port' in _body:
+        if isinstance(_body['port'], int):
+            result = True
+        else:
+            result = False
+    if result:
+        return True
     else:
         return False
 
@@ -199,3 +263,20 @@ def get_credentials(request, tipo):
         cred_l.append(auth)
     
     return cred_l
+
+def create_output(registros):
+    output_dict = list(dict())
+    try:
+        for object in registros:
+            object.pop("id", None)
+            output_dict.append({
+                "type": "FastEthernet" if object["type"] == "Fast" else "GigabitEhernet",
+                "slot": object["slot"],
+                "port": object["port"],
+                "ipv4_address": object["ip4_address"],
+                "status": "Up" if object["status"] == "u" else "Down"
+            })
+    except Exception as error:
+        return {"resutl": str(error)}
+        
+    return output_dict
