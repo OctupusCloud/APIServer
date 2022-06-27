@@ -80,11 +80,11 @@ def interfaces(request, _device):
                 if check_values(body):
                     try:
                         device_v = Devices.objects.get(name=(str(_device).strip()))
-                        type_v = cast_inter_type(body["type"],device_v)
+                        type_v = cast_inter_type_input(body["type"],device_v)
                         slot_v = body["slot"]
                         port_v = body["port"]
                         ip_address_v = body["ip4_address"]
-                        status_v = cast_inter_status(body["status"])
+                        status_v = cast_inter_status_input(body["status"])
                         try:
                             obj, created = Interfaces.objects.get_or_create(
                                 device=device_v,
@@ -113,11 +113,11 @@ def interfaces(request, _device):
                 if check_values(body):
                     try:
                         device_v = Devices.objects.get(name=(str(_device).strip()))
-                        type_v = cast_inter_type(body["type"],device_v)
+                        type_v = cast_inter_type_input(body["type"],device_v)
                         slot_v = body["slot"]
                         port_v = body["port"]
                         ip_address_v = body["ip4_address"] if "ip4_address" in body else False
-                        status_v = cast_inter_status(body["status"]) if "status" in body else False
+                        status_v = cast_inter_status_input(body["status"]) if "status" in body else False
                         try:
                             obj = Interfaces.objects.get(device=device_v,slot=slot_v,port=port_v)
                             obj.ip4_address = ip_address_v if ip_address_v else obj.ip4_address
@@ -136,7 +136,7 @@ def interfaces(request, _device):
             keys = list(body.keys())
             if keys == expected_keys:
                 device_v = Devices.objects.get(name=(str(_device).strip()))
-                type_v = cast_inter_type(body["type"],device_v)
+                type_v = cast_inter_type_input(body["type"],device_v)
                 slot_v = body["slot"]
                 port_v = body["port"]
                 try:
@@ -160,7 +160,7 @@ def interfaces_status(request, _device, _status):
     if auth:
         try:
             if request.method == "GET":
-                status_v = cast_inter_status(_status)
+                status_v = cast_inter_status_input(_status)
                 registros = list(Interfaces.objects.filter(device=str(_device).strip()).values() & Interfaces.objects.filter(status=status_v).values())
                 if len(registros) >= 1:
                     ouput_dict = create_output(registros,Interfaces)
@@ -232,12 +232,27 @@ def api_test(request):
         else:    
             headers_auth[key] = value
 
-    api_test['Headers'] = headers_auth
-    api_test['Method'] = request.method
-    api_test['Msg'] = f"Welcome to ApiServer by OctUPus - Ed Scrimaglia, Año 2022"
-    
     api_test_result = dict()
-    api_test_result['test_result'] = api_test
+    api_test['Status_Code'] = HttpResponse.status_code
+    api_test['Method'] = request.method
+    api_test['Scheme'] = request.scheme
+    api_test['Headers'] = headers_auth
+    if bool(request.encoding): 
+        api_test['Encoding'] = request.encoding
+    if bool(request.content_params):
+        api_test['Params'] = request.content_params
+    if bool(request.COOKIES):
+        api_test['Cookies'] = request.COOKIES
+    if bool(request.GET):
+        api_test['GET'] = request.GET
+    if bool(request.POST):
+        api_test['POST'] = request.POST
+    if bool(request.body):
+        api_test['Body'] = json.loads(request.body)
+    api_test_result['Content'] = api_test
+    msg = None
+    if bool(msg):
+        api_test_result['Msg'] = msg
 
     return JsonResponse(api_test_result, safe=False)
 
@@ -287,7 +302,7 @@ def create_output(_registros, _model):
     return output_dict
 
 
-def cast_inter_type(_type,_device):
+def cast_inter_type_input(_type,_device):
     if 'fastethernet'.find(_type.lower()) != -1:
         return "Fast"
     elif 'gigabitethernet'.find(_type.lower()) != -1:
@@ -299,7 +314,7 @@ def cast_inter_type(_type,_device):
             return "Giga"
 
 
-def cast_inter_status(_status):
+def cast_inter_status_input(_status):
     if 'up'.find(_status.lower()) != -1:
         return "u"
     else:
