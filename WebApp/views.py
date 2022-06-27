@@ -3,24 +3,18 @@
 
 from asyncore import write
 from codecs import encode
-#from encodings import utf_8
-#import imp
 from ipaddress import ip_address
-#from json import encoder
 from os import name
 from pickle import FALSE
 from turtle import up
-#from queue import Empty
-#import re
 from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render
 import json
 import base64
+from jmespath import search
 from py import code
 from pymysql import NULL, IntegrityError
 from tomlkit import item
-#from requests import Response
-#from yaml import safe_dump, serialize
 from WebApp.models import Interfaces, Devices, Usuarios
 from django.views.decorators.csrf import csrf_exempt
 from django.core.exceptions import ObjectDoesNotExist
@@ -47,20 +41,19 @@ def basic_authorization(request):
 
 @csrf_exempt
 def devices(request):
-    if request.method == "GET":
-        auth = basic_authorization(request)
-        if auth:
+    auth = basic_authorization(request)
+    if auth:
+        if request.method == "GET":
             registros = list(Devices.objects.all().values())
             if len(registros) >= 1:
-                for object in registros:
-                    object.pop("id", None)
-                return JsonResponse(registros, safe=False)
+                output_dict = create_output(registros,Devices) 
+                return JsonResponse(output_dict, safe=False)
             else:
-                msg = {"result": f"no hay registros."}
+                msg = {"result": f"No hay Devices registrados"}
         else:
-            msg = {"result": f"Problemas con la autorización"}
+            msg = {"result": f"Método {request.method} no sportado"}
     else:
-        msg = {"result": f"Método {request.method} no sportado"}
+        msg = {"result": f"Problemas con la autorización"}
     
     return JsonResponse(msg, safe=False)
 
@@ -73,10 +66,10 @@ def interfaces(request, _device):
         if request.method == "GET":
             registros = list(Interfaces.objects.filter(device=str(_device).strip()).values())
             if len(registros) >= 1:
-                output_dict = create_output(registros)
+                output_dict = create_output(registros,Interfaces)
                 return JsonResponse(output_dict, safe=False)
             else:
-                msg = {"result": f"no hay registros. Check URL device '{_device}'"}
+                msg = {"result": f"no hay registros. Check URL: device '{_device}'"}
 
             return HttpResponse(json.dumps(msg, ensure_ascii=False).encode("utf-8"))
         elif request.method == "POST":
@@ -87,11 +80,11 @@ def interfaces(request, _device):
                 if check_values(body):
                     try:
                         device_v = Devices.objects.get(name=(str(_device).strip()))
-                        type_v = body["type"]
+                        type_v = cast_inter_type(body["type"],device_v)
                         slot_v = body["slot"]
                         port_v = body["port"]
                         ip_address_v = body["ip4_address"]
-                        status_v = body["status"]
+                        status_v = cast_inter_status(body["status"])
                         try:
                             obj, created = Interfaces.objects.get_or_create(
                                 device=device_v,
@@ -103,9 +96,9 @@ def interfaces(request, _device):
                             if created:
                                 msg = {"result": f"Interfaz tipo: {type_v}, slot: {slot_v}, port: {port_v}, en device {device_v}, created"}
                             else:
-                                msg = {"result": f"Registro existente"}
+                                msg = {"result": f"Interfaz existente"}
                         except IntegrityError as error:
-                            msg = {"result": f"Registro existente"}
+                            msg = {"result": f"Interfaz existente"}
                     except ObjectDoesNotExist as error:
                         msg = {"result": f"No existe device '{_device}'. Check URL"}
                 else:
@@ -124,7 +117,7 @@ def interfaces(request, _device):
                         slot_v = body["slot"]
                         port_v = body["port"]
                         ip_address_v = body["ip4_address"] if "ip4_address" in body else False
-                        status_v = body["status"] if "status" in body else False
+                        status_v = cast_inter_status(body["status"]) if "status" in body else False
                         try:
                             obj = Interfaces.objects.get(device=device_v,slot=slot_v,port=port_v)
                             obj.ip4_address = ip_address_v if ip_address_v else obj.ip4_address
@@ -147,12 +140,12 @@ def interfaces(request, _device):
                 slot_v = body["slot"]
                 port_v = body["port"]
                 try:
-                    obj = Interfaces.objects.filter(device=device_v,type=type_v,slot=slot_v,port=port_v).delete()
+                    Interfaces.objects.get(device=device_v,type=type_v,slot=slot_v,port=port_v).delete()
                     msg = {"result": f"Interfaz tipo: {type_v}, slot: {slot_v}, port: {port_v}, en device {device_v}, deleted"}
                 except Interfaces.DoesNotExist as error:
                     msg = {"result": f"Interfaz no existe"}
             else:
-                msg = {"result": f"Body incorrecto, bad keys {keys}"}
+                msg = {"result": f"Body incorrecto, bad keys {keys}. Must be ['type','slot',''port]"}
         else:
             msg = {"result": f"Método {request.method} no permitido"}
     else:
@@ -160,27 +153,29 @@ def interfaces(request, _device):
 
     return JsonResponse(msg, safe=False)
 
+
 @csrf_exempt
 def interfaces_status(request, _device, _status):
-    if request.method == "GET":
-        auth = basic_authorization(request)
-        if _status.lower() == "up":
-            status_v = "u"
-        elif _status.lower() == "down":
-            status_v = "d"
-        if auth:
-            registros = list(Interfaces.objects.filter(device=str(_device).strip()).values() & Interfaces.objects.filter(status=status_v).values())
-            if len(registros) >= 1:
-                ouput_dict = create_output(registros)
-                return JsonResponse(ouput_dict, safe=False)
+    auth = basic_authorization(request)
+    if auth:
+        try:
+            if request.method == "GET":
+                status_v = cast_inter_status(_status)
+                registros = list(Interfaces.objects.filter(device=str(_device).strip()).values() & Interfaces.objects.filter(status=status_v).values())
+                if len(registros) >= 1:
+                    ouput_dict = create_output(registros,Interfaces)
+                    return JsonResponse(ouput_dict, safe=False)
+                else:
+                    msg = {"result": f"no hay registros. Check URL: device '{_device}' o status '{_status}'"}
             else:
-                msg = {"result": f"no hay registros. Check URL device '{_device}' o status '{_status}'"}
-        else:
-            msg = {"result": f"Problemas con la autorización"}
+                msg = {"result": f"Método {request.method} no sportado"}
+        except Exception as error:
+            msg = {"result": f"error"}
     else:
-        msg = {"result": f"Método {request.method} no sportado"}
+         msg = {"result": f"Problemas con la autorización"}
 
     return JsonResponse(msg, safe=False)
+
 
 def check_values(_body):
     if  'type' in _body:
@@ -212,6 +207,7 @@ def check_values(_body):
         return True
     else:
         return False
+
 
 @csrf_exempt
 def api_test(request):
@@ -245,6 +241,7 @@ def api_test(request):
 
     return JsonResponse(api_test_result, safe=False)
 
+
 def get_credentials(request, tipo):
     auth = request.headers['Authorization'].split()[1]
     cred_l = list()
@@ -264,19 +261,47 @@ def get_credentials(request, tipo):
     
     return cred_l
 
-def create_output(registros):
-    output_dict = list(dict())
+
+def create_output(_registros, _model):
+    output_dict = list()
     try:
-        for object in registros:
-            object.pop("id", None)
-            output_dict.append({
-                "type": "FastEthernet" if object["type"] == "Fast" else "GigabitEhernet",
-                "slot": object["slot"],
-                "port": object["port"],
-                "ipv4_address": object["ip4_address"],
-                "status": "Up" if object["status"] == "u" else "Down"
-            })
+        for object in _registros:
+            if _model == Interfaces:
+                output_dict.append({
+                    "type": "FastEthernet" if object["type"] == "Fast" else "GigabitEhernet",
+                    "slot": object["slot"],
+                    "port": object["port"],
+                    "ipv4_address": object["ip4_address"],
+                    "status": "Up" if object["status"] == "u" else "Down"
+                })
+            elif _model == Devices:
+                output_dict.append({
+                    "name": object["name"],
+                    "memory":  object["memory"],
+                    "vendor": object["vendor"],
+                    "family": object["family"],
+                })
     except Exception as error:
         return {"resutl": str(error)}
         
     return output_dict
+
+
+def cast_inter_type(_type,_device):
+    if 'fastethernet'.find(_type.lower()) != -1:
+        return "Fast"
+    elif 'gigabitethernet'.find(_type.lower()) != -1:
+        return "Giga"
+    else:
+        if str(_device).strip() == 'Catalyst 2900':
+            return "Fast"
+        else:
+            return "Giga"
+
+
+def cast_inter_status(_status):
+    if 'up'.find(_status.lower()) != -1:
+        return "u"
+    else:
+        return "d"
+   
