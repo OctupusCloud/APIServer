@@ -113,7 +113,7 @@ def interfaces(request, _device):
                 if check_values(body):
                     try:
                         device_v = Devices.objects.get(name=(str(_device).strip()))
-                        type_v = body["type"]
+                        type_v = cast_inter_type(body["type"],device_v)
                         slot_v = body["slot"]
                         port_v = body["port"]
                         ip_address_v = body["ip4_address"] if "ip4_address" in body else False
@@ -136,7 +136,7 @@ def interfaces(request, _device):
             keys = list(body.keys())
             if keys == expected_keys:
                 device_v = Devices.objects.get(name=(str(_device).strip()))
-                type_v = body["type"]
+                type_v = cast_inter_type(body["type"],device_v)
                 slot_v = body["slot"]
                 port_v = body["port"]
                 try:
