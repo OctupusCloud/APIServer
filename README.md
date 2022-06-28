@@ -22,7 +22,7 @@ POST
 &nbsp;&nbsp;&nbsp;&nbsp;"type": "Giga" o "Fast",  
 &nbsp;&nbsp;&nbsp;&nbsp;"slot": 0 o 1,  
 &nbsp;&nbsp;&nbsp;&nbsp;"port": 0 o 1,  
-&nbsp;&nbsp;&nbsp;&nbsp;"ip_address": "X.X.X.X" o "none",  
+&nbsp;&nbsp;&nbsp;&nbsp;"ipv4_address": "X.X.X.X" o "none",  
 &nbsp;&nbsp;&nbsp;&nbsp;"status": "u" o "d"  
 &nbsp;&nbsp;}  
 PATCH
@@ -31,7 +31,7 @@ PATCH
 &nbsp;&nbsp;&nbsp;&nbsp;"type": "Giga" o "Fast",  
 &nbsp;&nbsp;&nbsp;&nbsp;"slot": 0 o 1,  
 &nbsp;&nbsp;&nbsp;&nbsp;"port": 0 o 1,  
-&nbsp;&nbsp;&nbsp;&nbsp;"ip_address": "X.X.X.X" o "none",  
+&nbsp;&nbsp;&nbsp;&nbsp;"ipv4_address": "X.X.X.X" o "none",  
 &nbsp;&nbsp;&nbsp;&nbsp;"status": "u" o "d"  
 &nbsp;&nbsp;}  
 DELETE

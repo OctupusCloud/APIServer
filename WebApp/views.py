@@ -210,7 +210,7 @@ def check_values(_body):
 
 
 @csrf_exempt
-def api_test(request):
+def apitest(request):
     headers_o = dict(request.headers)
     api_test = dict()
     headers_auth = dict()
