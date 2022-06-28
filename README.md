@@ -49,7 +49,7 @@ Descripción: retorna las interfaces de un {dispositivo} almecenado en la DB seg
 Métodos:  
 GET  
 
-### 4- api/v1/api_test
+### 4- api/v1/apitest
 
 Descripción: verifica el funcionamiento del API, retornando todos los parametros del request enviados al API Server  
 

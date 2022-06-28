@@ -287,7 +287,7 @@ def create_output(_registros, _model):
                     "type": "FastEthernet" if object["type"] == "Fast" else "GigabitEhernet",
                     "slot": object["slot"],
                     "port": object["port"],
-                    "ipv4_address": object["ip4_address"],
+                    "ip4_address": object["ip4_address"],
                     "status": "Up" if object["status"] == "u" else "Down"
                 })
             elif _model == Devices:
