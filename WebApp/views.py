@@ -7,7 +7,7 @@ from ipaddress import ip_address
 from operator import itemgetter
 from pickle import FALSE
 from turtle import up
-from django.http import HttpResponse, JsonResponse
+from django.http import HttpRequest, HttpResponse, JsonResponse
 from django.shortcuts import render
 import json
 import base64
@@ -19,7 +19,7 @@ from WebApp.models import Interfaces, Devices, Usuarios
 from django.views.decorators.csrf import csrf_exempt
 from django.core.exceptions import ObjectDoesNotExist
 from django.db.utils import IntegrityError
-
+from urllib.parse import unquote
 
 # The Views and the Logic
 
@@ -51,7 +51,7 @@ def devices(request):
             else:
                 msg = {"result": f"No hay Devices registrados"}
         else:
-            msg = {"result": f"Método {request.method} no sportado"}
+            msg = {"result": f"Método {request.method} no permitido, endpoint {unquote(request.get_full_path())}"}
     else:
         msg = {"result": f"Problemas con la autorización"}
     
@@ -147,7 +147,7 @@ def interfaces(request, _device):
             else:
                 msg = {"result": f"Body incorrecto, bad keys {keys}. Must be ['type','slot',''port]"}
         else:
-            msg = {"result": f"Método {request.method} no permitido"}
+            msg = {"result": f"Método {request.method} no permitido, endpoint {unquote(request.get_full_path())}"}
     else:
         msg = {"result": f"Problemas con la autorización"}
 
@@ -168,7 +168,7 @@ def interfaces_status(request, _device, _status):
                 else:
                     msg = {"result": f"no hay registros. Check URL: device '{_device}' o status '{_status}'"}
             else:
-                msg = {"result": f"Método {request.method} no sportado"}
+                msg = {"result": f"Método {request.method} no permitido, endpoint {unquote(request.get_full_path())}"}
         except Exception as error:
             msg = {"result": f"error"}
     else:
@@ -233,6 +233,7 @@ def api_test(request):
             headers_auth[key] = value
 
     api_test_result = dict()
+    api_test['URL'] = request.get_full_path()
     api_test['Status_Code'] = HttpResponse.status_code
     api_test['Method'] = request.method
     api_test['Scheme'] = request.scheme
