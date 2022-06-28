@@ -4,7 +4,7 @@
 from asyncore import write
 from codecs import encode
 from ipaddress import ip_address
-from os import name
+from operator import itemgetter
 from pickle import FALSE
 from turtle import up
 from django.http import HttpResponse, JsonResponse
@@ -119,7 +119,7 @@ def interfaces(request, _device):
                         ip_address_v = body["ip4_address"] if "ip4_address" in body else False
                         status_v = cast_inter_status_input(body["status"]) if "status" in body else False
                         try:
-                            obj = Interfaces.objects.get(device=device_v,slot=slot_v,port=port_v)
+                            obj = Interfaces.objects.get(device=device_v,type=type_v,slot=slot_v,port=port_v)
                             obj.ip4_address = ip_address_v if ip_address_v else obj.ip4_address
                             obj.status = status_v if status_v else obj.status
                             obj.save()
@@ -319,4 +319,3 @@ def cast_inter_status_input(_status):
         return "u"
     else:
         return "d"
-   
