@@ -49,6 +49,13 @@ Descripción: retorna las interfaces de un {dispositivo} almecenado en la DB seg
 Métodos:  
 GET  
 
+### api/v1/api_test
+
+Descripción: verifica el funcionamiento del API, retornando todos los parametros del request enviados al API Server  
+
+Métodos:
+GET
+
 ## Base de datos
 
 SQLite  
