@@ -16,6 +16,8 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from WebApp.views import *
+from django.conf.urls.static import static
+from django.conf import settings
 
 
 urlpatterns = [
@@ -24,4 +26,5 @@ urlpatterns = [
     path('api/v1/devices', devices),
     path('api/v1/<str:_device>/interfaces', interfaces),
     path('api/v1/<str:_device>/interfaces/<str:_status>', interfaces_status),
+    path('home', webapp)
 ]

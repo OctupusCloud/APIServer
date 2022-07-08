@@ -320,3 +320,7 @@ def cast_inter_status_input(_status):
         return "u"
     else:
         return "d"
+
+
+def webapp(request):
+    return render(request,"home.html")
