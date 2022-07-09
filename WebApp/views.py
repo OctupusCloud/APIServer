@@ -343,6 +343,7 @@ def sub_pag_devices(request):
    
     return render(request,"devices.html",devices_v)
 
+
 def sub_pag_interfaces(request):
     registros = Interfaces.objects.all().order_by('device_id', 'type', 'slot', 'port').values()
     if len(registros) >= 1:
@@ -357,6 +358,7 @@ def sub_pag_interfaces(request):
         }
    
     return render(request,"interfaces.html",devices_v)
+
 
 def sub_pag_usuarios(request):
     registros = Usuarios.objects.all().order_by('usuario').values()
