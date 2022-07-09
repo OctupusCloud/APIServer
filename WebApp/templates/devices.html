@@ -1,0 +1,31 @@
+{% extends "home.html" %}
+
+{% block content %}
+<h3> Tabla Devices</h3>
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Memory</th>
+            <th>Vendor</th>
+            <th>Family</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% if cant_rec >= 0 %}
+        {% for device in data %}
+        <tr>
+            <td>{{device.name}}</td>
+            <td>{{device.memory}}</td>
+            <td>{{device.vendor}}</td>
+            <td>{{device.family}}</td>
+        </tr>
+        {% endfor %}
+        {% else %}
+        <tr>
+            <td>{{result}}</td>
+        </tr>
+        {% endif %}
+    </tbody>
+</table>
+{% endblock %}

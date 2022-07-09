@@ -37,6 +37,7 @@ def basic_authorization(request):
             return False
     else:
         return False
+    
 
 
 @csrf_exempt
@@ -324,3 +325,50 @@ def cast_inter_status_input(_status):
 
 def webapp(request):
     return render(request,"home.html")
+
+
+def sub_pag_devices(request):
+    registros = Devices.objects.all().values()
+    if len(registros) >= 1:
+        devices_v = {
+            
+            'data': Devices.objects.all().order_by('name').values(),
+            'cant_rec': len(registros)
+        }
+    else:
+        devices_v = {
+            'result': f"No hay Devices registrados",
+            'cant_rec': 0
+        }
+   
+    return render(request,"devices.html",devices_v)
+
+def sub_pag_interfaces(request):
+    registros = Interfaces.objects.all().order_by('device_id', 'type', 'slot', 'port').values()
+    if len(registros) >= 1:
+        devices_v = {
+            'data': registros,
+            'cant_rec': len(registros)
+        }
+    else:
+        devices_v = {
+            'result': f"No hay Devices registrados",
+            'cant_rec': 0
+        }
+   
+    return render(request,"interfaces.html",devices_v)
+
+def sub_pag_usuarios(request):
+    registros = Usuarios.objects.all().order_by('usuario').values()
+    if len(registros) >= 1:
+        devices_v = {
+            'data': registros,
+            'cant_rec': len(registros)
+        }
+    else:
+        devices_v = {
+            'result': f"No hay Devices registrados",
+            'cant_rec': 0
+        }
+   
+    return render(request,"usuarios.html",devices_v)

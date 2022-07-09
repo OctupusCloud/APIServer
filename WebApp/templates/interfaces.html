@@ -1,0 +1,35 @@
+{% extends "home.html" %}
+
+{% block content %}
+<h3> Tabla Interfaces</h3>
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Device</th>
+            <th>Type</th>
+            <th>Slot</th>
+            <th>Port</th>
+            <th>IP Address</th>
+            <th>Status</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% if cant_rec >= 0 %}
+        {% for inter in data %}
+        <tr>
+            <td>{{inter.device_id}}</td>
+            <td>{{inter.type}}</td>
+            <td>{{inter.slot}}</td>
+            <td>{{inter.port}}</td>
+            <td>{{inter.ip4_address}}</td>
+            <td>{{inter.status}}</td>
+        </tr>
+        {% endfor %}
+        {% else %}
+        <tr>
+            <td>{{result}}</td>
+        </tr>
+        {% endif %}
+    </tbody>
+</table>
+{% endblock %}

@@ -1,0 +1,27 @@
+{% extends "home.html" %}
+
+{% block content %}
+<h3> Tabla Usuarios</h3>
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Usuario</th>
+            <th>Password</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% if cant_rec >= 0 %}
+        {% for user in data %}
+        <tr>
+            <td>{{user.usuario}}</td>
+            <td>{{user.password}}</td>
+        </tr>
+        {% endfor %}
+        {% else %}
+        <tr>
+            <td>{{result}}</td>
+        </tr>
+        {% endif %}
+    </tbody>
+</table>
+{% endblock %}

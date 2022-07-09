@@ -23,8 +23,11 @@ from django.conf import settings
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/v1/apitest', apitest),
-    path('api/v1/devices', devices),
-    path('api/v1/<str:_device>/interfaces', interfaces),
-    path('api/v1/<str:_device>/interfaces/<str:_status>', interfaces_status),
-    path('home', webapp)
+    path('api/v1/devices', devices, name='Devices'),
+    path('api/v1/<str:_device>/interfaces', interfaces, name='Interfaces'),
+    path('api/v1/<str:_device>/interfaces/<str:_status>', interfaces_status, name='InterStatus'),
+    path('devices', sub_pag_devices, name='Devices'),
+    path('interfaces', sub_pag_interfaces, name='Interfaces'),
+    path('usuarios', sub_pag_usuarios, name='Usuarios'),
+    path('home', webapp, name='Navbar')
 ]
