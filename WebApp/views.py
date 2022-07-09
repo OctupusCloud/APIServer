@@ -288,7 +288,7 @@ def webapp(request):
     return render(request,"home.html")
 
 
-def proccess_sub_pag(request):
+def process_sub_pag(request):
     if request.method == 'GET':
         if 'device' in str(request.get_full_path()):
             registros = Devices.objects.all().order_by('name').values()
