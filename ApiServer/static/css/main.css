@@ -4,8 +4,13 @@ body {
     background: linear-gradient(to right, #E2E2E2, #C9D6FF); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
 }
 
-.letras {
+.letras_lineas {
     text-align: left;
     vertical-align: middle;
     font-size: medium;
+}
+
+.letras_cabecera {
+    text-align: left;
+    vertical-align: middle;
 }

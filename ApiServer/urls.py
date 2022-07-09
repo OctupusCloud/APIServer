@@ -26,8 +26,8 @@ urlpatterns = [
     path('api/v1/devices', devices, name='Devices'),
     path('api/v1/<str:_device>/interfaces', interfaces, name='Interfaces'),
     path('api/v1/<str:_device>/interfaces/<str:_status>', interfaces_status, name='InterStatus'),
-    path('devices', sub_pag_devices, name='Devices'),
-    path('interfaces', sub_pag_interfaces, name='Interfaces'),
-    path('usuarios', sub_pag_usuarios, name='Usuarios'),
+    path('devices', proccess_sub_pag, name='Devices'),
+    path('interfaces', proccess_sub_pag, name='Interfaces'),
+    path('usuarios', proccess_sub_pag, name='Usuarios'),
     path('home', webapp, name='Navbar')
 ]

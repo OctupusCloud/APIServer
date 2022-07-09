@@ -45,7 +45,7 @@ def devices(request):
     auth = basic_authorization(request)
     if auth:
         if request.method == "GET":
-            registros = list(Devices.objects.all().values())
+            registros = list(Devices.objects.all().order_by('name').values())
             if len(registros) >= 1:
                 output_dict = create_output(registros,Devices) 
                 return JsonResponse(output_dict, safe=False)
@@ -65,7 +65,7 @@ def interfaces(request, _device):
     msg = ''
     if auth:
         if request.method == "GET":
-            registros = list(Interfaces.objects.filter(device=str(_device).strip()).values())
+            registros = list(Interfaces.objects.filter(device=str(_device).strip()).order_by('device_id', 'type', 'slot', 'port').values())
             if len(registros) >= 1:
                 output_dict = create_output(registros,Interfaces)
                 return JsonResponse(output_dict, safe=False)
@@ -162,7 +162,8 @@ def interfaces_status(request, _device, _status):
         try:
             if request.method == "GET":
                 status_v = cast_inter_status_input(_status)
-                registros = list(Interfaces.objects.filter(device=str(_device).strip()).values() & Interfaces.objects.filter(status=status_v).values())
+                registros = list(Interfaces.objects.filter(device=str(_device).strip()).order_by('device_id', 'type', 'slot', 'port').values() 
+                    & Interfaces.objects.filter(status=status_v).order_by('device_id', 'type', 'slot', 'port').values())
                 if len(registros) >= 1:
                     ouput_dict = create_output(registros,Interfaces)
                     return JsonResponse(ouput_dict, safe=False)
@@ -212,49 +213,9 @@ def check_values(_body):
 
 @csrf_exempt
 def apitest(request):
-    headers_o = dict(request.headers)
-    api_test = dict()
-    headers_auth = dict()
-
-    for key,value in headers_o.items():
-        if key == "Authorization":
-            tipo_auth = request.headers['Authorization'].split()[0]
-            credentials = get_credentials(request,tipo_auth)
-            auth_v = dict()
-            if "Basic" in tipo_auth:
-                auth_v['Tipo'] = credentials[0]
-                auth_v['Encoded'] = value
-                auth_v['User'] = credentials[1]
-                auth_v['Password'] = credentials[2]
-            else:
-                auth_v['Tipo'] = credentials[0]
-                auth_v['Encoded'] = credentials[1]
-            headers_auth[key] = auth_v
-        else:    
-            headers_auth[key] = value
-
     api_test_result = dict()
-    api_test['URL'] = request.get_full_path()
-    api_test['Status_Code'] = HttpResponse.status_code
-    api_test['Method'] = request.method
-    api_test['Scheme'] = request.scheme
-    api_test['Headers'] = headers_auth
-    if bool(request.encoding): 
-        api_test['Encoding'] = request.encoding
-    if bool(request.content_params):
-        api_test['Params'] = request.content_params
-    if bool(request.COOKIES):
-        api_test['Cookies'] = request.COOKIES
-    if bool(request.GET):
-        api_test['GET'] = request.GET
-    if bool(request.POST):
-        api_test['POST'] = request.POST
-    if bool(request.body):
-        api_test['Body'] = json.loads(request.body)
-    api_test_result['Content'] = api_test
-    msg = None
-    if bool(msg):
-        api_test_result['Msg'] = msg
+    api_test_result['method'] = request.method
+    api_test_result['result'] = "API Test Up and running"
 
     return JsonResponse(api_test_result, safe=False)
 
@@ -327,50 +288,49 @@ def webapp(request):
     return render(request,"home.html")
 
 
-def sub_pag_devices(request):
-    registros = Devices.objects.all().values()
-    if len(registros) >= 1:
-        devices_v = {
-            
-            'data': Devices.objects.all().order_by('name').values(),
-            'cant_rec': len(registros)
-        }
+def proccess_sub_pag(request):
+    if request.method == 'GET':
+        if 'device' in str(request.get_full_path()):
+            registros = Devices.objects.all().order_by('name').values()
+            if len(registros) >= 1:
+                devices_v = {
+                    'data': registros,
+                    'cant_rec': len(registros)
+                }
+            else:
+                devices_v = {
+                    'result': f"No hay Devices registrados",
+                    'cant_rec': 0
+                }
+        
+            return render(request,"devices.html",devices_v)
+        elif 'interfaces' in str(request.get_full_path()):
+            registros = Interfaces.objects.all().order_by('device_id', 'type', 'slot', 'port').values()
+            if len(registros) >= 1:
+                devices_v = {
+                    'data': registros,
+                    'cant_rec': len(registros)
+                }
+            else:
+                devices_v = {
+                    'result': f"No hay Devices registrados",
+                    'cant_rec': 0
+                }
+        
+            return render(request,"interfaces.html",devices_v)
+        elif 'usuarios' in str(request.get_full_path()):
+            registros = Usuarios.objects.all().order_by('usuario').values()
+            if len(registros) >= 1:
+                devices_v = {
+                    'data': registros,
+                    'cant_rec': len(registros)
+                }
+            else:
+                devices_v = {
+                    'result': f"No hay Devices registrados",
+                    'cant_rec': 0
+                }
+        
+            return render(request,"usuarios.html",devices_v)
     else:
-        devices_v = {
-            'result': f"No hay Devices registrados",
-            'cant_rec': 0
-        }
-   
-    return render(request,"devices.html",devices_v)
-
-
-def sub_pag_interfaces(request):
-    registros = Interfaces.objects.all().order_by('device_id', 'type', 'slot', 'port').values()
-    if len(registros) >= 1:
-        devices_v = {
-            'data': registros,
-            'cant_rec': len(registros)
-        }
-    else:
-        devices_v = {
-            'result': f"No hay Devices registrados",
-            'cant_rec': 0
-        }
-   
-    return render(request,"interfaces.html",devices_v)
-
-
-def sub_pag_usuarios(request):
-    registros = Usuarios.objects.all().order_by('usuario').values()
-    if len(registros) >= 1:
-        devices_v = {
-            'data': registros,
-            'cant_rec': len(registros)
-        }
-    else:
-        devices_v = {
-            'result': f"No hay Devices registrados",
-            'cant_rec': 0
-        }
-   
-    return render(request,"usuarios.html",devices_v)
+        return HttpResponse("Must be a GET request")

@@ -4,7 +4,7 @@
 <h3> Tabla Devices</h3>
 <table class="table table-striped">
     <thead>
-        <tr>
+        <tr class="letras_cabecera">
             <th>Name</th>
             <th>Memory</th>
             <th>Vendor</th>
@@ -14,7 +14,7 @@
     <tbody>
         {% if cant_rec >= 0 %}
         {% for device in data %}
-        <tr class="letras">
+        <tr class="letras_lineas">
             <td>{{device.name}}</td>
             <td>{{device.memory}}</td>
             <td>{{device.vendor}}</td>
