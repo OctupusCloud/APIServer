@@ -16,13 +16,21 @@
     <tbody>
         {% if cant_rec >= 0 %}
         {% for inter in data %}
-        <tr>
+        <tr class="letras">
             <td>{{inter.device_id}}</td>
-            <td>{{inter.type}}</td>
+            {% if inter.type.lower == 'fast' %}
+            <td>Fastethernet</td>
+            {% else %}
+            <td>Gigabitethernet</td>
+            {% endif %}
             <td>{{inter.slot}}</td>
             <td>{{inter.port}}</td>
             <td>{{inter.ip4_address}}</td>
-            <td>{{inter.status}}</td>
+            {% if inter.status.lower == 'u' %}
+            <td>Up</td>
+            {% else %}
+            <td>Down</td>
+            {% endif %}
         </tr>
         {% endfor %}
         {% else %}
