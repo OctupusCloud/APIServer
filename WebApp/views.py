@@ -24,20 +24,33 @@ from urllib.parse import unquote
 # The Views and the Logic
 
 def basic_authorization(request):
-    auth = request.headers['Authorization'].split()[1]
-    auth_decoded = base64.b64decode(auth).decode('utf-8').split(":")
-    usuario_h = auth_decoded[0]
-    password_h = auth_decoded[1]
-    registro = list(Usuarios.objects.filter(usuario=usuario_h).values())
-    if len(registro) == 1:
-        password_db = registro[0]['password']
-        if password_h == password_db:
-            return True
+    auth_method = request.headers['Authorization'].split()[0]
+    if 'basic' in auth_method.lower():
+        auth = request.headers['Authorization'].split()[1]
+        auth_decoded = base64.b64decode(auth).decode('utf-8').split(":")
+        usuario_h = str(auth_decoded[0]).strip()
+        password_h = str(auth_decoded[1]).strip()
+        registro = list(Usuarios.objects.filter(usuario=usuario_h).values())
+        if len(registro) == 1:
+            password_db = str(registro[0]['password']).strip()
+            if password_h == password_db:
+                return True
+            else:
+                return False
+        else:
+            return False
+    elif auth_method.lower() in ['bearer','token']:
+        token_v = str(request.headers['Authorization'].split()[1]).strip()
+        registro = list(Tokens.objects.filter(token=token_v).values())
+        if len(registro) == 1:
+            if token_v == str(registro[0]['token']).strip():
+                return True
+            else:
+                return False
         else:
             return False
     else:
         return False
-    
 
 
 @csrf_exempt
@@ -313,7 +326,7 @@ def process_sub_pag(request):
                 }
             else:
                 devices_v = {
-                    'result': f"No hay Devices registrados",
+                    'result': f"No hay Interfaces registradas",
                     'cant_rec': 0
                 }
         
@@ -327,7 +340,7 @@ def process_sub_pag(request):
                 }
             else:
                 devices_v = {
-                    'result': f"No hay Devices registrados",
+                    'result': f"No hay Usuarios registrados",
                     'cant_rec': 0
                 }
         
@@ -341,7 +354,7 @@ def process_sub_pag(request):
                 }
             else:
                 devices_v = {
-                    'result': f"No hay Devices registrados",
+                    'result': f"No hay Tokens registrados",
                     'cant_rec': 0
                 }
         

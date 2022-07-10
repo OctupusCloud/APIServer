@@ -57,7 +57,7 @@ class Tokens(models.Model):
 
     class Meta:
         constraints = [
-            models.UniqueConstraint(fields=['token'], name="unique token")
+            models.UniqueConstraint(fields=['token', 'name'], name="unique token")
         ]
 
     def __str__(self):
