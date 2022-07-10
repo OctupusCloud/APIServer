@@ -14,3 +14,15 @@ body {
     text-align: left;
     vertical-align: middle;
 }
+
+.imagen_ppal {
+    max-width:fit-content;
+    max-height: fit-content;
+    margin-left: 50px;
+    margin-top: 20px;
+}
+
+.letras_img_ppal {
+    font-size: 1.6cm;
+    font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif
+}

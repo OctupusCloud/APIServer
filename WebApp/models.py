@@ -50,4 +50,15 @@ class Usuarios(models.Model):
 
     def __str__(self):
         return f"{self.usuario}"
-       
+
+class Tokens(models.Model):
+    token = models.CharField(max_length=60, blank=False, null=False, primary_key=True)
+    name = models.CharField(max_length=15, blank=False, null=False)
+
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(fields=['token'], name="unique token")
+        ]
+
+    def __str__(self):
+        return f"{self.token}"

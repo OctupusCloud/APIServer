@@ -15,7 +15,7 @@ from jmespath import search
 from py import code
 from pymysql import NULL, IntegrityError
 from tomlkit import item
-from WebApp.models import Interfaces, Devices, Usuarios
+from WebApp.models import Interfaces, Devices, Tokens, Usuarios
 from django.views.decorators.csrf import csrf_exempt
 from django.core.exceptions import ObjectDoesNotExist
 from django.db.utils import IntegrityError
@@ -284,8 +284,8 @@ def cast_inter_status_input(_status):
         return "d"
 
 
-def webapp(request):
-    return render(request,"home.html")
+def home(request):
+    return render(request,"main.html")
 
 
 def process_sub_pag(request):
@@ -332,5 +332,21 @@ def process_sub_pag(request):
                 }
         
             return render(request,"usuarios.html",devices_v)
+        elif 'token' in str(request.get_full_path()):
+            registros = Tokens.objects.all().order_by('name').values()
+            if len(registros) >= 1:
+                devices_v = {
+                    'data': registros,
+                    'cant_rec': len(registros)
+                }
+            else:
+                devices_v = {
+                    'result': f"No hay Devices registrados",
+                    'cant_rec': 0
+                }
+        
+            return render(request,"tokens.html",devices_v)
+        else:
+            return HttpResponse("Bad URL, check process_sub_pag method in views")
     else:
         return HttpResponse("Must be a GET request")

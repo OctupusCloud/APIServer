@@ -1,20 +1,20 @@
 {% extends "home.html" %}
 
 {% block content %}
-<h3> Tabla API Usuarios</h3>
+<h3> Tabla API Tokens</h3>
 <table class="table table-striped">
     <thead>
         <tr>
-            <th>Usuario</th>
-            <th>Password</th>
+            <th>Token</th>
+            <th>Name</th>
         </tr>
     </thead>
     <tbody>
         {% if cant_rec >= 0 %}
-        {% for user in data %}
+        {% for token in data %}
         <tr class="letras">
-            <td>{{user.usuario}}</td>
-            <td>{{user.password}}</td>
+            <td>{{token.token}}</td>
+            <td>{{token.name}}</td>
         </tr>
         {% endfor %}
         {% else %}

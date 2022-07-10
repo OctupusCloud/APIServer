@@ -56,7 +56,7 @@ ROOT_URLCONF = 'ApiServer.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': ['/Users/scrimaglia/Octupus/Codigo/Django/ApiServer/WebApp'],
+        'DIRS': [],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [

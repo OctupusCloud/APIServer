@@ -13,6 +13,11 @@ class ViewUsuarios(admin.ModelAdmin):
     list_display = ("usuario", "password")
     search_fields = ("usuario",)
 
+class ViewTokens(admin.ModelAdmin):
+    list_display = ("token", "name")
+    search_fields = ("name",)
+
 admin.site.register(Devices, ViewDevices)
 admin.site.register(Interfaces, ViewInterfaces)
 admin.site.register(Usuarios, ViewUsuarios)
+admin.site.register(Tokens, ViewTokens)

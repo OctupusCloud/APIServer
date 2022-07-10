@@ -29,5 +29,6 @@ urlpatterns = [
     path('devices', process_sub_pag, name='Devices'),
     path('interfaces', process_sub_pag, name='Interfaces'),
     path('usuarios', process_sub_pag, name='Usuarios'),
-    path('home', webapp, name='Navbar')
+    path('tokens', process_sub_pag, name='Tokens'),
+    path('home', home, name='Home')
 ]
