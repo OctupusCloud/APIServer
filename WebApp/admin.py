@@ -1,5 +1,6 @@
 from django.contrib import admin
-from .models import *
+from ApiApp.models import *
+from WebApp.models import *
 
 class ViewDevices(admin.ModelAdmin):
     list_display = ("name","memory","vendor","family")

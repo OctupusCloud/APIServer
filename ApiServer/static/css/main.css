@@ -16,13 +16,18 @@ body {
 }
 
 .imagen_ppal {
-    max-width:fit-content;
-    max-height: fit-content;
-    margin-left: 50px;
-    margin-top: 20px;
+    background-size: auto;
+    background-position: center top;
+    background-repeat: no-repeat;
+    object-fit: contain;
 }
 
 .letras_img_ppal {
     font-size: 1.6cm;
+    font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif
+}
+
+.letras_img_ppal_sec {
+    font-size: 1cm;
     font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif
 }
