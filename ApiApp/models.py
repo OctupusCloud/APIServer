@@ -4,6 +4,8 @@
 from operator import contains
 from tkinter import CASCADE, Widget
 from django import forms
+from django.core.validators import MaxValueValidator, MinValueValidator
+from django.core.exceptions import ValidationError
 from django.db import models
 from psutil import users
 
@@ -26,7 +28,7 @@ port_options = [(0,"Port 0"),(1,"Port 1")]
 class Interfaces(models.Model):
     device = models.ForeignKey(Devices,on_delete=models.CASCADE)
     type = models.CharField(max_length=20, choices=interface_options, default="Fast", blank=False, null=False)
-    slot = models.IntegerField(blank=False, choices=slot_options, null=False, default=0)
+    slot = models.IntegerField(blank=False,choices=slot_options, null=False, default=0)
     port = models.IntegerField(blank=False, choices=port_options, null=False, default=0)
     ip4_address = models.CharField(max_length=16, null=True, default=None)
     status = models.CharField(max_length=4, default="u", choices=status_options, blank=False, null=False)

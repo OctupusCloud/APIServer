@@ -5,7 +5,7 @@
 from asyncore import write
 from codecs import encode
 from ipaddress import ip_address
-from operator import itemgetter
+#from operator import itemgetter
 from pickle import FALSE
 from turtle import up
 from django.http import HttpRequest, HttpResponse, JsonResponse
@@ -76,7 +76,8 @@ def devices(request):
 @csrf_exempt
 def interfaces(request, _device):
     auth = basic_authorization(request)
-    msg = ''
+    msg = '' 
+    reason = ''
     if auth:
         if request.method == "GET":
             registros = list(Interfaces.objects.filter(device=str(_device).strip()).order_by('device_id', 'type', 'slot', 'port').values())
@@ -92,7 +93,8 @@ def interfaces(request, _device):
             body = json.loads(request.body.decode('utf-8'))
             keys = list(body.keys())
             if keys == expected_keys:
-                if check_values(body):
+                correct_body, reason = check_values(body,request.method)
+                if correct_body:
                     try:
                         device_v = Devices.objects.get(name=(str(_device).strip()))
                         type_v = cast_inter_type_input(body["type"],device_v)
@@ -117,15 +119,16 @@ def interfaces(request, _device):
                     except ObjectDoesNotExist as error:
                         msg = {"result": f"No existe device '{_device}'. Check URL"}
                 else:
-                    msg = {"result": f"Body incorrecto, bad values {body}"}
+                    msg = {"result": f"Body incorrecto, {reason}"}
             else:
-                msg = {"result": f"Body incorrecto, bad keys {keys}"}
+                msg = {"result": f"Body incorrecto, must be {expected_keys}"}
         elif request.method == "PATCH":
             expected_keys = ["type","slot","port","ip4_address","status"]
             body = json.loads(request.body.decode('utf-8'))
             keys = list(body.keys())
             if all(item in expected_keys for item in keys):
-                if check_values(body):
+                correct_body, reason = check_values(body,request.method)
+                if correct_body:
                     try:
                         device_v = Devices.objects.get(name=(str(_device).strip()))
                         type_v = cast_inter_type_input(body["type"],device_v)
@@ -143,8 +146,10 @@ def interfaces(request, _device):
                             msg = {"result": f"Interfaz no existe"}
                     except Devices.DoesNotExist as error:
                         msg = {"result": f"No existe device '{_device}'. Check URL"}
+                else:
+                    msg = {"result": f"Body incorrecto, {reason}"}
             else:
-                msg = {"result": f"Body incorrecto, bad keys {keys}"}
+                msg = {"result": f"Body incorrecto, must be ['type','slot','port' and 'ip4_address' or 'status']"}
         elif request.method == "DELETE":
             expected_keys = ["type","slot","port"]
             body = json.loads(request.body.decode('utf-8'))
@@ -193,36 +198,81 @@ def interfaces_status(request, _device, _status):
     return JsonResponse(msg, safe=False)
 
 
-def check_values(_body):
+def check_values(_body,_method):
     if  'type' in _body:
         if  isinstance(_body['type'], str):
-            result = True
+            if 'slot' in _body:
+                if isinstance(_body['slot'], int) and _body['slot'] in range(0,10):
+                    if 'port' in _body:
+                        if isinstance(_body['port'], int) and _body['port'] in range(0,10):
+                            msg = f"Body correcto"
+                        else:
+                            msg = f"key 'port' no es tipo integer o esta fuera de rango (0,9)"
+                            return False, msg
+                    else:
+                        msg = f"Body no contiene key 'port'"
+                        return False, msg
+                else:
+                    msg = f"key 'slot' no es tipo integer o esta fuera de rango (0,9)"
+                    return False, msg
+            else:
+                msg = f"Body no contiene key 'slot'"
+                return False, msg
         else:
-            result = False
-    if 'ip4_address' in _body:
-        if isinstance(_body['ip4_address'], str):
-            result = True
-        else:
-            result = False
-    if 'status' in _body:
-        if isinstance(_body['status'], str):
-            result = True
-        else:
-            result = False
-    if 'slot' in _body:
-        if isinstance(_body['slot'], int):
-            result = True
-        else:
-            result = False
-    if 'port' in _body:
-        if isinstance(_body['port'], int):
-            result = True
-        else:
-            result = False
-    if result:
-        return True
+            msg = f"key 'type' no es tipo string"
+            return False, msg
     else:
-        return False
+        msg = f"Body no contiene key 'type'"
+        return False, msg
+
+    if _method == 'POST':
+        if 'ip4_address' in _body:
+            if isinstance(_body['ip4_address'], str):
+                if 'status' in _body:
+                    if isinstance(_body['status'], str):
+                        msg = f"Body correcto"
+                        return True, msg
+                    else:
+                        msg = f"key 'status' no es tipo string"
+                        return False, msg
+                else:
+                    msg = f"Body no contiene key 'status'"
+            else:
+                msg = f"key 'ip4_address' no es tipo string"
+                return False, msg
+        else:
+            msg = f"Body no contiene key 'ip4_address'"
+            return False, msg
+    elif _method == 'PATCH':
+        isPatchCorrect = False
+        if 'ip4_address' in _body:
+            if isinstance(_body['ip4_address'], str):
+                msg = f"Body correcto"
+                isPatchCorrect = True
+            else:
+                msg = f"key 'ip4_address' no es tipo string"
+                return False, msg
+        if 'status' in _body:
+            if isinstance(_body['status'], str):
+                msg = f"Body correcto"
+                isPatchCorrect = True
+            else:
+                msg = f"key 'status' no es tipo string"
+                return False, msg
+        
+        if isPatchCorrect:
+            msg = "what"
+            return True, msg
+        else:
+            msg = f"Body no contiene los keys 'ip4_addres' ni 'status'"
+            return False, msg
+    else:
+        msg = f"Body checking for Método incorrecto {_method}"
+        return False, msg
+
+
+def check_ip_address(_ipa_ddress):
+    pass
 
 
 @csrf_exempt
