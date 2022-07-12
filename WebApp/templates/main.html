@@ -2,15 +2,10 @@
 
 {% load static %}
 
-{% block content %}
-
-<div class="container my-5 px-7">
-        <img src="{% static 'images/main.svg' %}" alt="" class="img-fluid float-start" width=37% title="Software for learning">
-        <div class="letras_img_ppal">
-                <p class="letras_img_ppal"><br><br>Software for Education</p>
-                <p class="sub_letras_img_ppal">Build & Use and API Server</p>
-        </div>
-
+{% block main %}
+<img src="{% static 'images/main.png' %}" alt="" width="480px" class="float-start imagen" title="Software for learning">
+<div>
+        <p class="letras_img_ppal"><br><br>Software for Education</p>
+        <p class="sub_letras_img_ppal">Build & Test and API Server</p>
 </div>
-
 {% endblock %}

@@ -15,9 +15,14 @@ body {
     vertical-align: middle;
 }
 
+.imagen {
+    margin-left: 30px;
+    margin-top: 30px;
+}
+
 .letras_img_ppal {
     text-align: left;
-    font-size: 1.6cm;
+    font-size: 1.5cm;
     font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif
 }
 
