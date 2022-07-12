@@ -22,7 +22,7 @@ class Devices(models.Model):
 
 status_options = [("u","Up"),("d","Down")]
 interface_options = [("Fast","FastEthernet"),("Giga","GigabitEthernet")]
-slot_options = [(0,"Slot 0"),(1,"Slot 1")]
+slot_options = [(0,"Slot 0"),(1,"Slot 1"),(2,"Slot 2"),(3,"Slot 3"),(4,"Slot 4"),(5,"Slot 5"),(6,"Slot 6"),(7,"Slot 7"),(8,"Slot 8"),(9,"Slot 9")]
 port_options = [(0,"Port 0"),(1,"Port 1")]
 
 class Interfaces(models.Model):
@@ -35,7 +35,8 @@ class Interfaces(models.Model):
 
     class Meta:
         constraints = [
-            models.UniqueConstraint(fields=['device','type','slot','port'], name="unique slot-port")
+            models.UniqueConstraint(fields=['device','type','slot','port'], name="unique slot-port"),
+            models.UniqueConstraint(fields=['device','ip4_address'], name="unique address")
         ]
 
     def __str__(self):

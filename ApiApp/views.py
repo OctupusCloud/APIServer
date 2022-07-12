@@ -116,7 +116,7 @@ def interfaces(request, _device):
                             else:
                                 msg = {"result": f"Interfaz existente"}
                         except IntegrityError as error:
-                            msg = {"result": f"Interfaz existente"}
+                            msg = {"result": f"IP Address duplicada"}
                     except ObjectDoesNotExist as error:
                         msg = {"result": f"No existe device '{_device}'. Check URL"}
                 else:
@@ -205,7 +205,7 @@ def check_values(_body,_method):
             if 'slot' in _body:
                 if isinstance(_body['slot'], int) and _body['slot'] in range(0,10):
                     if 'port' in _body:
-                        if isinstance(_body['port'], int) and _body['port'] in range(0,10):
+                        if isinstance(_body['port'], int) and _body['port'] in range(0,2):
                             msg = f"Body correcto"
                         else:
                             msg = f"key 'port' no es tipo integer o esta fuera de rango (0,9)"
