@@ -15,19 +15,18 @@ body {
     vertical-align: middle;
 }
 
-.imagen_ppal {
-    background-size: auto;
-    background-position: center top;
-    background-repeat: no-repeat;
-    object-fit: contain;
-}
-
 .letras_img_ppal {
+    text-align: left;
     font-size: 1.6cm;
     font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif
 }
 
-.letras_img_ppal_sec {
-    font-size: 1cm;
+.sub_letras_img_ppal {
+    text-align: left;
+    font-size: 0.6cm;
     font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif
+}
+
+.letra_footer {
+    font-size: medium;
 }

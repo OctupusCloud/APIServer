@@ -2,7 +2,7 @@
     {% load static %}
     <div class="container-fluid">
         <a class="navbar-brand" href="http://octupuscloud.com" target="_blank" rel="noopener noreferrer">
-            <img src="{% static 'images/octupus.png' %}" alt="" width="70" height="70" class="d-inline-block">
+            <img src="{% static 'images/octupus.png' %}" alt="" width="65" height="60" class="d-inline-block">
         </a>
         <label style="font-style:italic ; color: black; font-size:large";>API Server</label>
     </div>
@@ -15,6 +15,9 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item">
+                    <a class="nav-link" href="#">About</a>
+                </li>
                 <li class="nav-item">
                     <a class="nav-link" href="{% url 'Devices' %}">Devices</a>
                 </li>
