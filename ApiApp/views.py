@@ -21,10 +21,11 @@ from django.views.decorators.csrf import csrf_exempt
 from django.core.exceptions import ObjectDoesNotExist
 from django.db.utils import IntegrityError
 from urllib.parse import unquote
+import ipaddress 
 
 # The Views and the Logic
 
-def basic_authorization(request):
+def get_authorization(request):
     auth_method = request.headers['Authorization'].split()[0]
     if 'basic' in auth_method.lower():
         auth = request.headers['Authorization'].split()[1]
@@ -56,7 +57,7 @@ def basic_authorization(request):
 
 @csrf_exempt
 def devices(request):
-    auth = basic_authorization(request)
+    auth = get_authorization(request)
     if auth:
         if request.method == "GET":
             registros = list(Devices.objects.all().order_by('name').values())
@@ -75,7 +76,7 @@ def devices(request):
 
 @csrf_exempt
 def interfaces(request, _device):
-    auth = basic_authorization(request)
+    auth = get_authorization(request)
     msg = '' 
     reason = ''
     if auth:
@@ -176,7 +177,7 @@ def interfaces(request, _device):
 
 @csrf_exempt
 def interfaces_status(request, _device, _status):
-    auth = basic_authorization(request)
+    auth = get_authorization(request)
     if auth:
         try:
             if request.method == "GET":
@@ -228,15 +229,19 @@ def check_values(_body,_method):
     if _method == 'POST':
         if 'ip4_address' in _body:
             if isinstance(_body['ip4_address'], str):
-                if 'status' in _body:
-                    if isinstance(_body['status'], str):
-                        msg = f"Body correcto"
-                        return True, msg
+                correct_address, msg = validate_ip_address(_body['ip4_address'])
+                if correct_address:
+                    if 'status' in _body:
+                        if isinstance(_body['status'], str):
+                            msg = f"Body correcto"
+                            return True, msg
+                        else:
+                            msg = f"key 'status' no es tipo string"
+                            return False, msg
                     else:
-                        msg = f"key 'status' no es tipo string"
-                        return False, msg
+                        msg = f"Body no contiene key 'status'"
                 else:
-                    msg = f"Body no contiene key 'status'"
+                    return False, msg
             else:
                 msg = f"key 'ip4_address' no es tipo string"
                 return False, msg
@@ -247,8 +252,12 @@ def check_values(_body,_method):
         isPatchCorrect = False
         if 'ip4_address' in _body:
             if isinstance(_body['ip4_address'], str):
-                msg = f"Body correcto"
-                isPatchCorrect = True
+                correct_address, msg = validate_ip_address(_body['ip4_address'])
+                if correct_address:
+                    msg = f"Body correcto"
+                    isPatchCorrect = True
+                else:
+                    return False, msg 
             else:
                 msg = f"key 'ip4_address' no es tipo string"
                 return False, msg
@@ -270,9 +279,16 @@ def check_values(_body,_method):
         msg = f"Body checking for Método incorrecto {_method}"
         return False, msg
 
-
-def check_ip_address(_ipa_ddress):
-    pass
+   
+def validate_ip_address(address):
+    try:
+        ip = ipaddress.ip_address(address)
+        msg = f"IP address {address} is valid."
+        status = True
+    except ValueError:
+        msg = f"IP address {address} is not valid"
+        status = False
+    return  status, msg
 
 
 @csrf_exempt
