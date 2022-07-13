@@ -16,29 +16,29 @@ componentes: el servidor donde reside la aplicación, la o las bases de datos do
 los mismos, la interfaz gráfica de la aplicación, las funciones de la aplicación sobre los 
 datos, y finalmente, el <p class="fst-italic d-inline">API</p>.<br><br>
 
-El <p class="fst-italic d-inline">API</p> (Application Program Interface) puede entenderse como un módulo (<p class="fst-italic d-inline">API</p> Server) que nos 
-permite acceder a los datos de una aplicación desde otra (<p class="fst-italic d-inline">API</p> Client), siguiendo las especificaciones 
+El <p class="fst-italic d-inline">API</p> (Application Program Interface) puede entenderse como un módulo (<p class="fst-italic d-inline">API</p> Server) 
+que nos permite acceder a los datos de una aplicación desde otra (<p class="fst-italic d-inline">API</p> Client), siguiendo las especificaciones 
 de formato y funcionalidad establecidas en la definición del <p class="fst-italic d-inline">API</p>.<br><br>
 
 La definición de un <p class="fst-italic d-inline">API</p>, no es otra cosa que un conjunto de objetos llamados endpoints  (funciones) 
-que definen acciones y el formato o encoding de los datos (JSON, XML, MIBs, etc.)  que las funciones 
+que definen acciones, y el formato o encoding de los datos (JSON, XML, MIBs, etc.)  que las funciones 
 o acciones deben presentar o manipular.<br><br>
 
 En un <p class="fst-italic d-inline">API</p> HTTP, un endpoint se identifica a través de un URL, y cada vez que es convocado (request o 
 <p class="fst-italic d-inline">API</p> Call), este ejecuta las acciones y retorna datos en el formato especificado. Así por ejemplo, un 
-call al endpoint <a href="{% url 'Devices' %} " title="Devices API endpoint">http://api/v1/devices</a>, devuelve la lista de dispositivos almacenados en la BD de la 
-aplicación que los contiene.<br><br>
+call al endpoint <a href="{% url 'Devices' %} " title="Devices API endpoint">http://api/v1/devices</a>, devuelve la lista de dispositivos 
+almacenados en la BD de la aplicación que los contiene.<br><br>
 
 En el mundo de Automatismo, esto es, escribir software para que una aplicación le pase a otra (dispositivo de 
 red, VM en un servidor o Cloud, etc.) parámetros de configuración y/o consulta, saber sobre APIs en detalle 
 es fundamental pues la comunicación entre aplicaciones se realiza siempre via <p class="fst-italic d-inline">APIs</p> (CliConf, RestConf, NetConf, 
 RestFull, etc.).<br><br>
 
-En tal sentido y para facilitar el estudio o para que sirva como plataforma de testing, construimos ApiServer SFE 
+En tal sentido y para facilitar el estudio, o para que sirva como plataforma de testing, construimos <p class="fst-italic d-inline">API</p> Server SFE 
 (Software for Education). <p class="fst-italic d-inline">API</p> SFE es un proyecto completo que contiene todos los elementos 
-mencionados anteriormente. 
-Se puede construir desde cero el ApiServer o se puede testear el ApiClient (Api Request) contra el ApiServer mientras 
-se está construyendo, por ejemplo, utilizando el lenguaje Python.<br><br>
+mencionados anteriormente.<br><br>
+Ya sea se construya desde cero o se utilice para testear el <p class="fst-italic d-inline">API</p> Request mientras se escribe, por ejemplo, utilizando 
+el lenguaje Python, <p class="fst-italic d-inline">API</p> Server es de suma utilidad durante dicho proceso.<br><br>
 
 <p class="fs-4 text-decoration-underline">Interfaz gráfica</p>
 La interfaz gráfica de <p class="fst-italic d-inline">API</p> Server, permite ver el contenido de las distintas tablas de la 
@@ -53,6 +53,14 @@ Las siguientes secciones en el menú de navegación <strong>Navbar</strong>, sel
     <li>Sección API</li>
 </ul>
 
+<p class="fs-4 text-decoration-underline">Usuarios y Tokens</p>
+
+Las tablas Usuarios y Tokens, contienen las credenciales que se deben usar cuando se construye un <p class="fst-italic d-inline">API</p> Request. 
+Usuario y Password corresponden al método de autorización <a href="https://datatracker.ietf.org/doc/html/rfc7617#section-2.1" 
+target="_blank" rel="noopener noreferrer" title="Basic auhorization RFC">Basic</a> y Tokens a los método 
+de autorización <a href="https://datatracker.ietf.org/doc/html/rfc6750" target="_blank" rel="noopener noreferrer" title="Bearer auhorization 
+RFC">Bearer Token</a> o <a href="https://datatracker.ietf.org/doc/html/rfc6749" target="_blank" rel="noopener noreferrer" title="OAuth2 auhorization 
+RFC">OAuth 2</a>.<br><br>
 
 <p class="fs-4 text-decoration-underline">Sección API</p>
 
@@ -62,9 +70,9 @@ Authorization, etc., aparecen en detale para que tanto desde un <p class="fst-it
 como <a href="https://www.postman.com/" target="_blank" rel="noopener noreferrer" title="HTTP Client">postman</a>, o desde un lenguaje de 
 programación, puedas construir el request y testear el funcionamiento del <strong>endpoint</strong><br><br>
 
-<p class="fs-4 text-decoration-underline">Link to project</p>
+<p class="fs-4 text-decoration-underline">Link to the project</p>
 
-<p class="fst-italic d-inline">API</p> Server project <a href="https://github.com/OctupusCloud/ApiServer" title="Fuentes del proyecto">source code</a>
+<a href="https://github.com/OctupusCloud/ApiServer" title="Fuentes del proyecto"><p class="fst-italic d-inline">API</p> Server en GitHub</a>
 <hr/>
 </article>
 {% endblock %}
