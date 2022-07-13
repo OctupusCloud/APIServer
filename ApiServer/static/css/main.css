@@ -15,9 +15,16 @@ body {
     vertical-align: middle;
 }
 
+.letras_about {
+    text-align: left;
+    vertical-align: middle;
+    font-size: medium;
+}
+
 .imagen {
     margin-left: 30px;
     margin-top: 30px;
+    object-fit: contain;
 }
 
 .letras_img_ppal {

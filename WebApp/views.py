@@ -14,6 +14,8 @@ from ApiApp.models import Interfaces, Devices, Tokens, Usuarios
 def home(request):
     return render(request,"main.html")
 
+def about(request):
+    return render(request,"about.html")
 
 def process_sub_pag(request):
     if request.method == 'GET':

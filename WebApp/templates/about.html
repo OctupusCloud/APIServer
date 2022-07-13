@@ -1,0 +1,70 @@
+{% extends "home.html" %}
+
+{% load static %}
+{% block about %}
+    
+<h3>API Server SFE (Software for Education)</h3>
+<hr/>
+<img src="{% static 'images/apitesting1.jpg' %}" width="30%" class="float-end">
+<article class="letras_about lh-sm">
+<p class="fst-italic d-inline"> Las APIs</p> son un contrato explicito acerca de cómo dos aplicaciones intercambian
+información. Debemos entender cómo funcionan y en ocasiones, aprender a construirlas 
+para resolver problemas de automatización.<br><br>
+
+Cuando se habla de <p class="fst-italic d-inline">APIs</p>, específicamente APIs basadas en HTTP, hay que considerar varios 
+componentes: el servidor donde reside la aplicación, la o las bases de datos donde persisten 
+los mismos, la interfaz gráfica de la aplicación, las funciones de la aplicación sobre los 
+datos, y finalmente, el <p class="fst-italic d-inline">API</p>.<br><br>
+
+El <p class="fst-italic d-inline">API</p> (Application Program Interface) puede entenderse como un módulo (<p class="fst-italic d-inline">API</p> Server) que nos 
+permite acceder a los datos de una aplicación desde otra (<p class="fst-italic d-inline">API</p> Client), siguiendo las especificaciones 
+de formato y funcionalidad establecidas en la definición del <p class="fst-italic d-inline">API</p>.<br><br>
+
+La definición de un <p class="fst-italic d-inline">API</p>, no es otra cosa que un conjunto de objetos llamados endpoints  (funciones) 
+que definen acciones y el formato o encoding de los datos (JSON, XML, MIBs, etc.)  que las funciones 
+o acciones deben presentar o manipular.<br><br>
+
+En un <p class="fst-italic d-inline">API</p> HTTP, un endpoint se identifica a través de un URL, y cada vez que es convocado (request o 
+<p class="fst-italic d-inline">API</p> Call), este ejecuta las acciones y retorna datos en el formato especificado. Así por ejemplo, un 
+call al endpoint <a href="{% url 'Devices' %} " title="Devices API endpoint">http://api/v1/devices</a>, devuelve la lista de dispositivos almacenados en la BD de la 
+aplicación que los contiene.<br><br>
+
+En el mundo de Automatismo, esto es, escribir software para que una aplicación le pase a otra (dispositivo de 
+red, VM en un servidor o Cloud, etc.) parámetros de configuración y/o consulta, saber sobre APIs en detalle 
+es fundamental pues la comunicación entre aplicaciones se realiza siempre via <p class="fst-italic d-inline">APIs</p> (CliConf, RestConf, NetConf, 
+RestFull, etc.).<br><br>
+
+En tal sentido y para facilitar el estudio o para que sirva como plataforma de testing, construimos ApiServer SFE 
+(Software for Education). <p class="fst-italic d-inline">API</p> SFE es un proyecto completo que contiene todos los elementos 
+mencionados anteriormente. 
+Se puede construir desde cero el ApiServer o se puede testear el ApiClient (Api Request) contra el ApiServer mientras 
+se está construyendo, por ejemplo, utilizando el lenguaje Python.<br><br>
+
+<p class="fs-4 text-decoration-underline">Interfaz gráfica</p>
+La interfaz gráfica de <p class="fst-italic d-inline">API</p> Server, permite ver el contenido de las distintas tablas de la 
+Base de Datos y los detalles de la especificación del <p class="fst-italic d-inline">API</p>.<br>
+Las siguientes secciones en el menú de navegación <strong>Navbar</strong>, seleccionan las tablas y despliegan su contenido.<br><br> 
+
+<ul>
+    <a href="{% url 'Devices' %}"><li>Sección Devices</li></a>
+    <a href="{% url 'Interfaces' %}"><li>Sección Interfaces</li></a>
+    <a href="{% url 'Usuarios' %}"><li>Sección Usuarios</li></a>
+    <a href="{% url 'Tokens' %}"><li>Sección Tokens</li></a>
+    <li>Sección API</li>
+</ul>
+
+
+<p class="fs-4 text-decoration-underline">Sección API</p>
+
+La sección <p class="fst-italic d-inline">API</p> detalla la especificación y funcionamiento (métodos) de cada 
+<strong>endpoint</strong>. Datos tales como Verbos soportados (GET, POST, etc), Headers, Body,
+Authorization, etc., aparecen en detale para que tanto desde un <p class="fst-italic d-inline">API</p> Client 
+como <a href="https://www.postman.com/" target="_blank" rel="noopener noreferrer" title="HTTP Client">postman</a>, o desde un lenguaje de 
+programación, puedas construir el request y testear el funcionamiento del <strong>endpoint</strong><br><br>
+
+<p class="fs-4 text-decoration-underline">Link to project</p>
+
+<p class="fst-italic d-inline">API</p> Server project <a href="https://github.com/OctupusCloud/ApiServer" title="Fuentes del proyecto">source code</a>
+<hr/>
+</article>
+{% endblock %}

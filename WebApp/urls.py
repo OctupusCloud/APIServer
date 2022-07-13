@@ -21,6 +21,7 @@ from django.conf import settings
 
 
 urlpatterns = [
+    path('about', about, name='About'),
     path('devices', process_sub_pag, name='Devices'),
     path('interfaces', process_sub_pag, name='Interfaces'),
     path('usuarios', process_sub_pag, name='Usuarios'),
