@@ -40,34 +40,6 @@ body {
     font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif
 }
 
-.apidev_code {
-    border-radius: 10px;
-    border: 1px solid rgb(166, 166, 248);
-    box-shadow: rgb(150, 150, 150) 7px 7px 7px;
-    color:darkred;
-    margin-left: 20px;
-    line-height: 150%;
-}
-
-.indent_0 {
-    margin-left: 0px;
-}
-
-.indent_2 {
-    margin-left: 20px;
-}
-
-.indent_4 {
-    margin-left: 32px;
-}
-
-.token_in {
-    margin-left: 20px;
-    margin-right: 1px;
-    border-left-width: 2px;
-    border-bottom-width: 2px;
-}
-
 .letra_footer {
     font-size: medium;
 }
