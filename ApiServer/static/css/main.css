@@ -61,6 +61,13 @@ body {
     margin-left: 32px;
 }
 
+.token_in {
+    margin-left: 20px;
+    margin-right: 1px;
+    border-left-width: 2px;
+    border-bottom-width: 2px;
+}
+
 .letra_footer {
     font-size: medium;
 }
