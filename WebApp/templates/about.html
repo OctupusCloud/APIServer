@@ -26,7 +26,7 @@ o acciones deben presentar o manipular.<br><br>
 
 En un <p class="fst-italic d-inline">API</p> HTTP, un endpoint se identifica a través de un URL, y cada vez que es convocado (request o 
 <p class="fst-italic d-inline">API</p> Call), este ejecuta las acciones y retorna datos en el formato especificado. Así por ejemplo, un 
-call al endpoint <a href="{% url 'Devices' %} " title="Devices API endpoint">http://api/v1/devices</a>, devuelve la lista de dispositivos 
+call al endpoint <a href="{% url 'Devices' %}" title="Devices API endpoint">http://api/v1/devices</a>, devuelve la lista de dispositivos 
 almacenados en la BD de la aplicación que los contiene.<br><br>
 
 En el mundo de Automatismo, esto es, escribir software para que una aplicación le pase a otra (dispositivo de 
@@ -50,17 +50,16 @@ Las siguientes secciones en el menú de navegación <strong>Navbar</strong>, sel
     <a href="{% url 'Interfaces' %}"><li>Sección Interfaces</li></a>
     <a href="{% url 'Usuarios' %}"><li>Sección Usuarios</li></a>
     <a href="{% url 'Tokens' %}"><li>Sección Tokens</li></a>
-    <li>Sección API</li>
 </ul>
 
 <p class="fs-4 text-decoration-underline">Usuarios y Tokens</p>
 
 Las tablas Usuarios y Tokens, contienen las credenciales que se deben usar cuando se construye un <p class="fst-italic d-inline">API</p> Request. 
 Usuario y Password corresponden al método de autorización <a href="https://datatracker.ietf.org/doc/html/rfc7617#section-2.1" 
-target="_blank" rel="noopener noreferrer" title="Basic auhorization RFC">Basic</a> y Tokens a los método 
+target="_blank" rel="noopener noreferrer" title="Basic auhorization RFC 7617">Basic (RFC 7617)</a> y Tokens a los método 
 de autorización <a href="https://datatracker.ietf.org/doc/html/rfc6750" target="_blank" rel="noopener noreferrer" title="Bearer auhorization 
-RFC">Bearer Token</a> o <a href="https://datatracker.ietf.org/doc/html/rfc6749" target="_blank" rel="noopener noreferrer" title="OAuth2 auhorization 
-RFC">OAuth 2</a>.<br><br>
+RFC 6750">Bearer Token (RFC 6750)</a> o <a href="https://datatracker.ietf.org/doc/html/rfc6749" target="_blank" rel="noopener noreferrer" title="OAuth2 auhorization 
+RFC 6749)">OAuth 2 (RFC 6749)</a>.<br><br>
 
 <p class="fs-4 text-decoration-underline">Sección API</p>
 
@@ -70,9 +69,12 @@ Authorization, etc., aparecen en detale para que tanto desde un <p class="fst-it
 como <a href="https://www.postman.com/" target="_blank" rel="noopener noreferrer" title="HTTP Client">postman</a>, o desde un lenguaje de 
 programación, puedas construir el request y testear el funcionamiento del <strong>endpoint</strong><br><br>
 
-<p class="fs-4 text-decoration-underline">Link to the project</p>
+<p class="fs-4 text-decoration-underline">Links to the project</p>
 
-<a href="https://github.com/OctupusCloud/ApiServer" title="Fuentes del proyecto"><p class="fst-italic d-inline">API</p> Server en GitHub</a>
+<a href="https://github.com/OctupusCloud/ApiServer" target="_blank" rel="noopener noreferrer" title="Fuentes del proyecto"><p 
+    class="fst-italic d-inline">API</p> Server en GitHub</a><br>
+<a href="https://www.octupus.com/blog" target="_blank" rel="noopener noreferrer" title="Episodios en nuestro Blog"><p 
+    class="fst-italic d-inline">API</p> Server en episodios</a>
 <hr/>
 </article>
 {% endblock %}

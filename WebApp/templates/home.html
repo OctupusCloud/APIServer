@@ -18,24 +18,30 @@
         {% include "cabecera.html" %}
 
         <section>
-            <div class="container my-3">
-                <div class="row">
-                    <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12 py-2">
-                        {% block content %}
-                        {% endblock %}
+            <article>
+                <div class="container my-3">
+                    <div class="row">
+                        <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12 py-2">
+                            {% block content %}
+                            {% endblock %}
+                        </div>
                     </div>
                 </div>
-            </div>
+            </article>
 
-            <div class="container my-3">
-                {% block main %}
-                {% endblock %}
-            </div>
+            <article>
+                <div id="template_main" class="container my-3">
+                    {% block main %}
+                    {% endblock %}
+                </div>
+            </article>
 
-            <div class="container my-3 py-2">
-                {% block about %}
-                {% endblock %}
-            </div>
+            <article>
+                <div id="template_about" class="container my-3 py-2">
+                    {% block about %}
+                    {% endblock %}
+                </div>
+            </article>
         </section>
 
         {# se incluye la pagina footer #}
@@ -43,5 +49,6 @@
 
         <!-- Import Bootstrap JS-->
         <script src="{% static 'bootstrap/bootstrap.bundle.min.js' %}" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+        <script src="{% static 'bootstrap/copy_to_clip.js' %}"></script>
     </body>
 </html>

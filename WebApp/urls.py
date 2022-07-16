@@ -26,5 +26,7 @@ urlpatterns = [
     path('interfaces', process_sub_pag, name='Interfaces'),
     path('usuarios', process_sub_pag, name='Usuarios'),
     path('tokens', process_sub_pag, name='Tokens'),
-    path('home', home, name='Home')
+    path('apidevices', apidevices, name='APIdevices'),
+    path('text_python', copy_text_python, name='Text_Python'),
+    path('', home, name='Home')
 ]

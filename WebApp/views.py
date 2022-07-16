@@ -17,6 +17,9 @@ def home(request):
 def about(request):
     return render(request,"about.html")
 
+def apidevices(request):
+    return render(request,"apidevices.html")
+
 def process_sub_pag(request):
     if request.method == 'GET':
         if 'device' in str(request.get_full_path()):
@@ -79,3 +82,22 @@ def process_sub_pag(request):
             return HttpResponse("Bad URL, check process_sub_pag method in views")
     else:
         return HttpResponse("Must be a GET request")
+
+def copy_text_python(request,texto):
+    texto = {
+            "to_clipboard": {
+                [
+                    "import requests",
+                    "import json",
+                    "url = 'http://apiserver.octupus.com/api/v1/devices'",
+                    "headers = {",
+                    "'Authorization': 'Token c26b519346e0755bf9b864c0db8d3d36d854ab23'",
+                    "'Content-Type': 'application/json'",
+                    "}",
+                    "response = requests.request('GET', url, headers=headers, data=payload)",
+                    "}"
+                ]
+            },
+    }
+
+    return JsonResponse(texto, safe=False)
