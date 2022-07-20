@@ -65,5 +65,6 @@ SQLite
 Devices  
 Interfaces  
 Usuarios  
+Tokens  
 
 ### Ed Scrimaglia, Año 2022
