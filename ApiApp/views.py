@@ -142,7 +142,7 @@ def interfaces(request, _device):
                             obj.ip4_address = ip_address_v if ip_address_v else obj.ip4_address
                             obj.status = status_v if status_v else obj.status
                             obj.save()
-                            msg = {"result": f"Interfaz tipo: {type_v}, slot: {slot_v}, port: {port_v}, en device {device_v}, updated"}
+                            msg = {"result": f"Interfaz tipo: {type_v}, slot: {slot_v}, port: {port_v}, en device {device_v}, modified"}
                         except Interfaces.DoesNotExist as error:
                             msg = {"result": f"Interfaz no existe"}
                     except Devices.DoesNotExist as error:
