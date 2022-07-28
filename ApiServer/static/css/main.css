@@ -23,8 +23,8 @@ body {
 
 .letras_img_ppal {
     text-align: left;
-    font-size: 1.5cm;
-    font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif
+    font-size: 1.1cm;
+    font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
 }
 
 .sub_letras_img_ppal {
@@ -35,4 +35,10 @@ body {
 
 .letra_footer {
     font-size: medium;
+}
+
+.imagen {
+    margin-top: 7%;
+    margin-left: 13%;
+    left: 10%;
 }
