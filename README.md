@@ -67,25 +67,28 @@ Interfaces
 Usuarios  
 Tokens  
 
-## Gunicorn Socket
+## Adicionales
+
+[adicionales](https://github.com/escrimaglia/myrepo/tree/main/Mybackground)
+### Gunicorn Socket
 
 /etc/system/systemd/gunicorn.socket
 
 Configuración file Socket Nginx to Gunicorn
 
-## Gunicorn HTTP WSGI Server
+### Gunicorn HTTP WSGI Server
 
 /etc/system/systemd/gunicorn.service
 
 Configuración file Gunicorn Service
 
-## Nginx Web Server
+### Nginx Web Server
 
 /etc/nginx/sites-enabled/nginx.conf (puede ser renombrado)
 
 Configuración file Nginx
 
-## Configuración Nginx y Gunicorn example
+### Configuración Nginx y Gunicorn example
 
 <https://www.digitalocean.com/community/tutorials/how-to-set-up-django-with-postgres-nginx-and-gunicorn-on-ubuntu-20-04-es>
 
