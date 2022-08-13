@@ -71,18 +71,22 @@ Tokens
 
 /etc/system/systemd/gunicorn.socket
 
-Configuración Socket Nginx to Gunicorn
+Configuración file Socket Nginx to Gunicorn
 
 ## Gunicorn HTTP WSGI Server
 
 /etc/system/systemd/gunicorn.service
 
-Configuración Gunicorn Service
+Configuración file Gunicorn Service
 
 ## Nginx Web Server
 
 /etc/nginx/sites-enabled/nginx.conf (puede ser renombrado)
 
-Configuración Nginx
+Configuración file Nginx
+
+## Configuración Nginx y Gunicorn example
+
+https://www.digitalocean.com/community/tutorials/how-to-set-up-django-with-postgres-nginx-and-gunicorn-on-ubuntu-20-04-es
 
 ### Ed Scrimaglia, Año 2022
