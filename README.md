@@ -69,7 +69,7 @@ Tokens
 
 ## Adicionales
 
-[adicionales](https://github.com/OctupusCloud/ApiServer/tree/main/Adicionales)
+[Config files](https://github.com/OctupusCloud/ApiServer/tree/main/Adicionales)
 
 ### Gunicorn Socket
 
