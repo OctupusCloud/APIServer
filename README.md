@@ -69,7 +69,8 @@ Tokens
 
 ## Adicionales
 
-[adicionales](https://github.com/escrimaglia/myrepo/tree/main/Mybackground)
+[adicionales](https://github.com/OctupusCloud/ApiServer/tree/main/Adicionales)
+
 ### Gunicorn Socket
 
 /etc/system/systemd/gunicorn.socket
