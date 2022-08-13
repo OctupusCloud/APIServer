@@ -67,4 +67,22 @@ Interfaces
 Usuarios  
 Tokens  
 
+## Gunicorn Socket
+
+/etc/system/systemd/gunicorn.socket
+
+Configuración Socket Nginx to Gunicorn
+
+## Gunicorn HTTP WSGI Server
+
+/etc/system/systemd/gunicorn.service
+
+Configuración Gunicorn Service
+
+## Nginx Web Server
+
+/etc/nginx/sites-enabled/nginx.conf (puede ser renombrado)
+
+Configuración Nginx
+
 ### Ed Scrimaglia, Año 2022
