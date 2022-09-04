@@ -7,7 +7,7 @@ from codecs import encode
 from ipaddress import ip_address
 #from operator import itemgetter
 from pickle import FALSE
-from turtle import up
+#from turtle import up
 from django.http import HttpRequest, HttpResponse, JsonResponse
 from django.shortcuts import render
 import json
