@@ -8,7 +8,6 @@ from ipaddress import ip_address
 #from operator import itemgetter
 from pickle import FALSE
 #from turtle import up
-import tkinter
 from django.http import HttpRequest, HttpResponse, JsonResponse
 from django.shortcuts import render
 import json
