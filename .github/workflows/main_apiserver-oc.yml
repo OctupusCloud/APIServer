@@ -60,4 +60,4 @@ jobs:
         with:
           app-name: 'apiserver-oc'
           slot-name: 'Production'
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_51DB81F62E2E4B39A658E8FB08054E13 }}
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_3DBF4B9F28394B089FF5DE77AA4F2192 }}
